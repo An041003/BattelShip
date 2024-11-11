@@ -3,12 +3,12 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include "auth.h" // Thêm thư viện xác thực
 
 #define PORT 8080
 #define MAX_PLAYERS 2
 #define BUFFER_SIZE 1024
 
-// Khởi tạo server
 int main() {
     int server_fd, new_socket, players[MAX_PLAYERS] = {0}, player_count = 0;
     struct sockaddr_in address;
@@ -45,9 +45,54 @@ int main() {
             perror("Accept failed");
             continue;
         }
-        printf("Player %d connected.\n", player_count + 1);
-        players[player_count++] = new_socket;
-        send(new_socket, welcome_message, strlen(welcome_message), 0);
+
+        // Yêu cầu người dùng chọn "login" hoặc "register"
+        send(new_socket, "Type 'login' to log in or 'register' to create a new account: ", strlen("Type 'login' to log in or 'register' to create a new account: "), 0);
+        read(new_socket, buffer, BUFFER_SIZE);
+
+        if (strncmp(buffer, "register", 8) == 0) {
+            // Xử lý đăng ký
+            send(new_socket, "Enter your desired username: ", strlen("Enter your desired username: "), 0);
+            read(new_socket, buffer, BUFFER_SIZE);
+            char username[50];
+            strcpy(username, buffer);
+
+            send(new_socket, "Enter your desired password: ", strlen("Enter your desired password: "), 0);
+            read(new_socket, buffer, BUFFER_SIZE);
+            char password[50];
+            strcpy(password, buffer);
+
+            if (register_account(username, password)) {
+                send(new_socket, "Registration successful! Please reconnect to log in.\n", strlen("Registration successful! Please reconnect to log in.\n"), 0);
+            } else {
+                send(new_socket, "Registration failed. Username may already exist.\n", strlen("Registration failed. Username may already exist.\n"), 0);
+            }
+            close(new_socket);
+        } else if (strncmp(buffer, "login", 5) == 0) {
+            // Xử lý đăng nhập
+            send(new_socket, "Enter your username: ", strlen("Enter your username: "), 0);
+            read(new_socket, buffer, BUFFER_SIZE);
+            char username[50];
+            strcpy(username, buffer);
+
+            send(new_socket, "Enter your password: ", strlen("Enter your password: "), 0);
+            read(new_socket, buffer, BUFFER_SIZE);
+            char password[50];
+            strcpy(password, buffer);
+
+            char session_id[20];
+            if (login_account(username, password, session_id)) {
+                printf("Player %d logged in successfully.\n", player_count + 1);
+                players[player_count++] = new_socket;
+                send(new_socket, welcome_message, strlen(welcome_message), 0);
+            } else {
+                send(new_socket, "Login failed. Disconnecting...\n", strlen("Login failed. Disconnecting...\n"), 0);
+                close(new_socket);
+            }
+        } else {
+            send(new_socket, "Invalid option. Disconnecting...\n", strlen("Invalid option. Disconnecting...\n"), 0);
+            close(new_socket);
+        }
     }
     printf("Both players connected. Game starting...\n");
 

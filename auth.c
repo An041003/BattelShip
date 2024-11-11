@@ -1,11 +1,9 @@
-// auth.c
 #include "auth.h"
 #include <stdio.h>
 #include <string.h>
-#include <openssl/sha.h> // Thư viện OpenSSL để băm mật khẩu
+#include <openssl/sha.h> 
 #include <stdlib.h>
 
-// Hàm băm mật khẩu sử dụng SHA-256
 void hash_password(const char *password, char *hashed_password)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -17,7 +15,6 @@ void hash_password(const char *password, char *hashed_password)
     hashed_password[SHA256_DIGEST_LENGTH * 2] = '\0';
 }
 
-// Hàm kiểm tra username có tồn tại không
 bool username_exists(const char *username)
 {
     FILE *file = fopen(USER_DATA_FILE, "r");
@@ -39,12 +36,11 @@ bool username_exists(const char *username)
     return false;
 }
 
-// Hàm đăng ký tài khoản mới
 bool register_account(const char *username, const char *password)
 {
     if (username_exists(username))
     {
-        return false; // Tên người dùng đã tồn tại
+        return false; 
     }
 
     char hashed_password[SHA256_DIGEST_LENGTH * 2 + 1];
@@ -54,12 +50,11 @@ bool register_account(const char *username, const char *password)
     if (!file)
         return false;
 
-    fprintf(file, "%s|%s|1000\n", username, hashed_password); // 1000 là điểm ELO mặc định
+    fprintf(file, "%s|%s|1000\n", username, hashed_password); 
     fclose(file);
     return true;
 }
 
-// Hàm đăng nhập
 bool login_account(const char *username, const char *password, char *session_id)
 {
     FILE *file = fopen(USER_DATA_FILE, "r");
@@ -76,12 +71,12 @@ bool login_account(const char *username, const char *password, char *session_id)
         sscanf(line, "%[^|]|%[^|]", stored_username, stored_password_hash);
         if (strcmp(stored_username, username) == 0 && strcmp(stored_password_hash, hashed_input_password) == 0)
         {
-            snprintf(session_id, 20, "%s_session", username); // Tạo session_id đơn giản
+            snprintf(session_id, 20, "%s_session", username); 
             fclose(file);
-            return true; // Đăng nhập thành công
+            return true; 
         }
     }
 
     fclose(file);
-    return false; // Đăng nhập thất bại
+    return false; 
 }
