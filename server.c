@@ -3,13 +3,38 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <mysql/mysql.h>
 #include "auth.h" // Thêm thư viện xác thực
 
 #define PORT 8080
 #define MAX_PLAYERS 2
 #define BUFFER_SIZE 1024
 
+#define DB_HOST "localhost"
+#define DB_USER "phuong"
+#define DB_PASS "Tranphuong1253*"
+#define DB_NAME "battle_ship"
+
+MYSQL *connectDatabase() {
+    MYSQL *conn = mysql_init(NULL);
+    if (conn == NULL) {
+        fprintf(stderr, "mysql_init() failed\n");
+        return NULL;
+    }
+    if (mysql_real_connect(conn, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) {
+        fprintf(stderr, "mysql_real_connect() failed\n");
+        mysql_close(conn);
+        return NULL;
+    }
+    return conn;
+}
+
 int main() {
+     MYSQL *conn = connectDatabase();
+    if (conn == NULL) {
+        return 1;
+    }
+
     int server_fd, new_socket, players[MAX_PLAYERS] = {0}, player_count = 0;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
@@ -62,7 +87,7 @@ int main() {
             char password[50];
             strcpy(password, buffer);
 
-            if (register_account(username, password)) {
+            if (register_account(username, password,conn)) {
                 send(new_socket, "Registration successful! Please reconnect to log in.\n", strlen("Registration successful! Please reconnect to log in.\n"), 0);
             } else {
                 send(new_socket, "Registration failed. Username may already exist.\n", strlen("Registration failed. Username may already exist.\n"), 0);
@@ -81,7 +106,7 @@ int main() {
             strcpy(password, buffer);
 
             char session_id[20];
-            if (login_account(username, password, session_id)) {
+            if (login_account(username, password, conn)) {
                 printf("Player %d logged in successfully.\n", player_count + 1);
                 players[player_count++] = new_socket;
                 send(new_socket, welcome_message, strlen(welcome_message), 0);
