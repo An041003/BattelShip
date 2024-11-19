@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/ClientExecutable.dir/client.c.o CMakeFiles/ClientExecutable.dir/auth.c.o  -o ClientExecutable  -lSDL2 -lSDL2_ttf -lssl -lcrypto -lmysqlclient 

@@ -4,7 +4,8 @@
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <mysql/mysql.h>
-#include "auth.h" // Thêm thư viện xác thực
+#include "auth.h" 
+#include "protocol.h"
 
 #define PORT 8080
 #define MAX_PLAYERS 2

@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/ServerExecutable.dir/server.c.o CMakeFiles/ServerExecutable.dir/auth.c.o  -o ServerExecutable  -lSDL2 -lSDL2_ttf -lssl -lcrypto -lmysqlclient 
