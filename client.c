@@ -96,7 +96,7 @@ int main() {
         printf("%s", buffer);
 
         // Kiểm tra nếu đăng nhập thành công
-        if (strstr(buffer, START_GAME) != NULL) {
+        if (strstr(buffer, LOGIN_SUCCESS) != NULL) {
             printf("\nYou are now logged in and connected to the game server!\n");
             // Logic game có thể được thêm vào đây
         } else {

@@ -109,7 +109,7 @@ int main() {
             if (login_account(username, password, conn)) {
                 printf("Player %d logged in successfully.\n", player_count + 1);
                 players[player_count++] = new_socket;
-                send(new_socket, START_GAME, strlen(START_GAME), 0);
+                send(new_socket, LOGIN_SUCCESS, strlen(LOGIN_SUCCESS), 0);
             } else {
                 send(new_socket, "Login failed. Disconnecting...\n", strlen("Login failed. Disconnecting...\n"), 0);
                 close(new_socket);
