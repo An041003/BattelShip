@@ -6,4 +6,8 @@ CMakeFiles/Client.dir/auth.c.o: ../auth.h
 
 CMakeFiles/Client.dir/client.c.o: ../client.c
 CMakeFiles/Client.dir/client.c.o: ../protocol.h
+CMakeFiles/Client.dir/client.c.o: ../ui/ui.h
+
+CMakeFiles/Client.dir/ui/ui.c.o: ../ui/ui.c
+CMakeFiles/Client.dir/ui/ui.c.o: ../ui/ui.h
 

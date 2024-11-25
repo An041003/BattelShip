@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_C
   "/home/an/Documents/GitHub/BattelShip/auth.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Server.dir/auth.c.o"
   "/home/an/Documents/GitHub/BattelShip/server.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Server.dir/server.c.o"
+  "/home/an/Documents/GitHub/BattelShip/ui/ui.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Server.dir/ui/ui.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

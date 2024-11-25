@@ -4,7 +4,8 @@
 CMakeFiles/Server.dir/auth.c.o: ../auth.c
 CMakeFiles/Server.dir/auth.c.o: ../auth.h
 
-CMakeFiles/Server.dir/server.c.o: ../auth.h
-CMakeFiles/Server.dir/server.c.o: ../protocol.h
 CMakeFiles/Server.dir/server.c.o: ../server.c
+
+CMakeFiles/Server.dir/ui/ui.c.o: ../ui/ui.c
+CMakeFiles/Server.dir/ui/ui.c.o: ../ui/ui.h
 

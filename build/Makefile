@@ -220,6 +220,36 @@ server.c.s:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/server.c.s
 .PHONY : server.c.s
 
+ui/ui.o: ui/ui.c.o
+
+.PHONY : ui/ui.o
+
+# target to build an object file
+ui/ui.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.o
+.PHONY : ui/ui.c.o
+
+ui/ui.i: ui/ui.c.i
+
+.PHONY : ui/ui.i
+
+# target to preprocess a source file
+ui/ui.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.i
+.PHONY : ui/ui.c.i
+
+ui/ui.s: ui/ui.c.s
+
+.PHONY : ui/ui.s
+
+# target to generate assembly for a file
+ui/ui.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.s
+.PHONY : ui/ui.c.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -239,6 +269,9 @@ help:
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"
+	@echo "... ui/ui.o"
+	@echo "... ui/ui.i"
+	@echo "... ui/ui.s"
 .PHONY : help
 
 

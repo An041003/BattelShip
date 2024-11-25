@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/Client.dir/auth.c.o"
   "CMakeFiles/Client.dir/client.c.o"
+  "CMakeFiles/Client.dir/ui/ui.c.o"
   "Client"
   "Client.pdb"
 )

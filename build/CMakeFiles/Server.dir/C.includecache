@@ -6,16 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/home/an/Documents/GitHub/BattelShip/auth.h
-stdbool.h
--
-mysql/mysql.h
--
-
-/home/an/Documents/GitHub/BattelShip/protocol.h
-stdbool.h
--
-
 /home/an/Documents/GitHub/BattelShip/server.c
 stdio.h
 -
@@ -29,8 +19,4 @@ arpa/inet.h
 -
 mysql/mysql.h
 -
-auth.h
-/home/an/Documents/GitHub/BattelShip/auth.h
-protocol.h
-/home/an/Documents/GitHub/BattelShip/protocol.h
 

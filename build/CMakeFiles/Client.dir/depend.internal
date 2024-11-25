@@ -7,3 +7,7 @@ CMakeFiles/Client.dir/auth.c.o
 CMakeFiles/Client.dir/client.c.o
  /home/an/Documents/GitHub/BattelShip/client.c
  /home/an/Documents/GitHub/BattelShip/protocol.h
+ /home/an/Documents/GitHub/BattelShip/ui/ui.h
+CMakeFiles/Client.dir/ui/ui.c.o
+ /home/an/Documents/GitHub/BattelShip/ui/ui.c
+ /home/an/Documents/GitHub/BattelShip/ui/ui.h

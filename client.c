@@ -3,19 +3,60 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <SDL2/SDL.h>
 #include "protocol.h"
+#include "ui/ui.h"
 
 #define PORT 8080
 #define BUFFER_SIZE 1024
 
+typedef struct {
+    char username[BUFFER_SIZE];
+    char password[BUFFER_SIZE];
+    char serverMessage[BUFFER_SIZE];
+    int option; 
+    int loggedIn;
+     int sock;
+} SharedData;
+
+SharedData sharedData;
+
+
+// Hàm gửi dữ liệu đến server và nhận phản hồi
+void communicateWithServer(const char *message) {
+
+     send(sharedData.sock, message, strlen(message), 0);
+
+    memset(sharedData.serverMessage, 0, BUFFER_SIZE);
+    int bytesRead = read(sharedData.sock, sharedData.serverMessage, BUFFER_SIZE);
+    if(bytesRead <=0)
+    {
+         strcpy(sharedData.serverMessage, "Lost connection to server");
+         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", sharedData.serverMessage, NULL);
+
+        close(sharedData.sock);
+        exit(1);
+
+    }
+
+
+
+}
+
 int main() {
-    int sock = 0;
+    // Khởi tạo SDL và UI
+    SDL_Window *window;
+    SDL_Renderer *renderer;
+    if (!ui_init(&window, &renderer)) {
+        return 1;
+    }
+
     struct sockaddr_in serv_addr;
-    char buffer[BUFFER_SIZE] = {0};
 
     // Tạo socket
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("\nSocket creation error\n");
+    if ((sharedData.sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("Socket creation error");
+         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Socket creation error", NULL);
         return -1;
     }
 
@@ -24,86 +65,71 @@ int main() {
 
     // Kết nối tới địa chỉ server
     if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0) {
-        printf("\nInvalid address/ Address not supported\n");
+        perror("Invalid address/ Address not supported");
+          SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Invalid address/ Address not supported", NULL);
         return -1;
     }
 
     // Kết nối tới server
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
-        printf("\nConnection Failed\n");
+    if (connect(sharedData.sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) {
+        perror("Connection Failed");
+         SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Error", "Connection Failed", NULL);
         return -1;
     }
 
-    // Nhận yêu cầu từ server
-    memset(buffer, 0, BUFFER_SIZE);  
-    read(sock, buffer, BUFFER_SIZE);
-    printf("%s", buffer);
 
-    // Nhập lựa chọn (login hoặc register)
-    memset(buffer, 0, BUFFER_SIZE);  
-    fgets(buffer, BUFFER_SIZE, stdin);
-    buffer[strcspn(buffer, "\n")] = 0; 
-    send(sock, buffer, strlen(buffer), 0);
+    sharedData.loggedIn = 0;
+    sharedData.option = 0; 
+    SDL_Event e;
+    int quit = 0;
+    memset(sharedData.username, 0, BUFFER_SIZE);
+    memset(sharedData.password, 0, BUFFER_SIZE);
+    memset(sharedData.serverMessage, 0, BUFFER_SIZE);
 
-    if (strcmp(buffer, REGISTER) == 0) {
-        // Xử lý đăng ký
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);  
-        printf("%s", buffer);
-        
-        memset(buffer, 0, BUFFER_SIZE);  
-        fgets(buffer, BUFFER_SIZE, stdin);
-        buffer[strcspn(buffer, "\n")] = 0;
-        send(sock, buffer, strlen(buffer), 0);
+     while (!quit) {
+        while (SDL_PollEvent(&e) != 0) {
 
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);  
-        printf("%s", buffer);
+            ui_handle_input(&e, sharedData.username, sharedData.password, &sharedData.option, &quit);
 
-        memset(buffer, 0, BUFFER_SIZE);  
-        fgets(buffer, BUFFER_SIZE, stdin);
-        buffer[strcspn(buffer, "\n")] = 0;
-        send(sock, buffer, strlen(buffer), 0);
+            if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN) {
+                if (sharedData.option == 1) {
+                     communicateWithServer(REGISTER);
+                    if (strcmp(sharedData.serverMessage, REGISTER_SUCCESS) == 0) {
+                           sharedData.option = 2;  
+                           memset(sharedData.username, 0, BUFFER_SIZE);
+                           memset(sharedData.password, 0, BUFFER_SIZE);
+                    }
+                } else if (sharedData.option == 2) {
+                    communicateWithServer(LOGIN);
+                    if (strcmp(sharedData.serverMessage, LOGIN_SUCCESS) == 0) {
+                        sharedData.loggedIn = 1;
+                        sharedData.option = 3;
+                        
+                    }
+                }
+            }
 
-        // Nhận phản hồi từ server
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);
-        printf("%s", buffer);
 
-    } else if (strcmp(buffer, LOGIN) == 0) {
-        // Xử lý đăng nhập
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);  
-        printf("%s", buffer);
-        
-        memset(buffer, 0, BUFFER_SIZE);
-        fgets(buffer, BUFFER_SIZE, stdin);
-        buffer[strcspn(buffer, "\n")] = 0;
-        send(sock, buffer, strlen(buffer), 0);
-
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);  
-        printf("%s", buffer);
-        
-        memset(buffer, 0, BUFFER_SIZE);  
-        fgets(buffer, BUFFER_SIZE, stdin);
-        buffer[strcspn(buffer, "\n")] = 0;
-        send(sock, buffer, strlen(buffer), 0);
-
-        // Nhận phản hồi từ server
-        memset(buffer, 0, BUFFER_SIZE);  
-        read(sock, buffer, BUFFER_SIZE);
-        printf("%s", buffer);
-
-        // Kiểm tra nếu đăng nhập thành công
-        if (strstr(buffer, LOGIN_SUCCESS) != NULL) {
-            printf("\nYou are now logged in and connected to the game server!\n");
-            // Logic game có thể được thêm vào đây
-        } else {
-            printf("Failed to log in. Exiting.\n");
         }
+        // Vẽ giao diện dựa trên trạng thái hiện tại
+            if(sharedData.loggedIn == 1)
+            {   
+                // ui_render_game_screen(renderer);
+
+
+            } else
+            { 
+               ui_render_interface(renderer, sharedData.username, sharedData.password, sharedData.serverMessage, sharedData.option);
+            }
+     
+
+        SDL_Delay(16); // Giới hạn FPS
+
     }
 
-    close(sock);
+
+
+    close(sharedData.sock);
+    ui_cleanup(window, renderer);
     return 0;
 }

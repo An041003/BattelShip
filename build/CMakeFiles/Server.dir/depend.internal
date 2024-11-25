@@ -5,6 +5,7 @@ CMakeFiles/Server.dir/auth.c.o
  /home/an/Documents/GitHub/BattelShip/auth.c
  /home/an/Documents/GitHub/BattelShip/auth.h
 CMakeFiles/Server.dir/server.c.o
- /home/an/Documents/GitHub/BattelShip/auth.h
- /home/an/Documents/GitHub/BattelShip/protocol.h
  /home/an/Documents/GitHub/BattelShip/server.c
+CMakeFiles/Server.dir/ui/ui.c.o
+ /home/an/Documents/GitHub/BattelShip/ui/ui.c
+ /home/an/Documents/GitHub/BattelShip/ui/ui.h

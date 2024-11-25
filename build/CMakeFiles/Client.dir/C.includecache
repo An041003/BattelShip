@@ -17,10 +17,20 @@ unistd.h
 -
 arpa/inet.h
 -
+SDL2/SDL.h
+-
 protocol.h
 /home/an/Documents/GitHub/BattelShip/protocol.h
+ui/ui.h
+/home/an/Documents/GitHub/BattelShip/ui/ui.h
 
 /home/an/Documents/GitHub/BattelShip/protocol.h
 stdbool.h
+-
+
+/home/an/Documents/GitHub/BattelShip/ui/ui.h
+SDL2/SDL.h
+-
+SDL2/SDL_ttf.h
 -
 

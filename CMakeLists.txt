@@ -7,6 +7,7 @@ set(CMAKE_C_STANDARD_REQUIRED True)
 
 set(COMMON_SOURCES
     auth.c
+    ui/ui.c 
 )
 
 add_executable(Server
