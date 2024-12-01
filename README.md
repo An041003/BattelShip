@@ -12,7 +12,7 @@ $(pkg-config --cflags --libs sdl2_ttf) \
 ./login
 
 ================================================
-gcc temp.c -o temp \
+gcc place_ship.c -o place_ship \
 $(pkg-config --cflags --libs sdl2) \
 $(pkg-config --cflags --libs sdl2_ttf) \
 -I/opt/homebrew/opt/mysql-client/include \
