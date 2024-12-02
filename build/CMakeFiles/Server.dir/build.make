@@ -70,47 +70,122 @@ CMakeFiles/Server.dir/server.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/server.c.s"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/server.c -o CMakeFiles/Server.dir/server.c.s
 
-CMakeFiles/Server.dir/auth.c.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/auth.c.o: ../auth.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Server.dir/auth.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/auth.c.o   -c /home/an/Documents/GitHub/BattelShip/auth.c
+CMakeFiles/Server.dir/model/auth.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/model/auth.c.o: ../model/auth.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Server.dir/model/auth.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/model/auth.c.o   -c /home/an/Documents/GitHub/BattelShip/model/auth.c
 
-CMakeFiles/Server.dir/auth.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/auth.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/auth.c > CMakeFiles/Server.dir/auth.c.i
+CMakeFiles/Server.dir/model/auth.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/model/auth.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/model/auth.c > CMakeFiles/Server.dir/model/auth.c.i
 
-CMakeFiles/Server.dir/auth.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/auth.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/auth.c -o CMakeFiles/Server.dir/auth.c.s
+CMakeFiles/Server.dir/model/auth.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/model/auth.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/model/auth.c -o CMakeFiles/Server.dir/model/auth.c.s
 
-CMakeFiles/Server.dir/ui/ui.c.o: CMakeFiles/Server.dir/flags.make
-CMakeFiles/Server.dir/ui/ui.c.o: ../ui/ui.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Server.dir/ui/ui.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/ui/ui.c.o   -c /home/an/Documents/GitHub/BattelShip/ui/ui.c
+CMakeFiles/Server.dir/model/network.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/model/network.c.o: ../model/network.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Server.dir/model/network.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/model/network.c.o   -c /home/an/Documents/GitHub/BattelShip/model/network.c
 
-CMakeFiles/Server.dir/ui/ui.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/ui/ui.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/ui/ui.c > CMakeFiles/Server.dir/ui/ui.c.i
+CMakeFiles/Server.dir/model/network.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/model/network.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/model/network.c > CMakeFiles/Server.dir/model/network.c.i
 
-CMakeFiles/Server.dir/ui/ui.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/ui/ui.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/ui/ui.c -o CMakeFiles/Server.dir/ui/ui.c.s
+CMakeFiles/Server.dir/model/network.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/model/network.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/model/network.c -o CMakeFiles/Server.dir/model/network.c.s
+
+CMakeFiles/Server.dir/view/base_view.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/view/base_view.c.o: ../view/base_view.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/Server.dir/view/base_view.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/view/base_view.c.o   -c /home/an/Documents/GitHub/BattelShip/view/base_view.c
+
+CMakeFiles/Server.dir/view/base_view.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/view/base_view.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/view/base_view.c > CMakeFiles/Server.dir/view/base_view.c.i
+
+CMakeFiles/Server.dir/view/base_view.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/view/base_view.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/view/base_view.c -o CMakeFiles/Server.dir/view/base_view.c.s
+
+CMakeFiles/Server.dir/view/login_view.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/view/login_view.c.o: ../view/login_view.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Server.dir/view/login_view.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/view/login_view.c.o   -c /home/an/Documents/GitHub/BattelShip/view/login_view.c
+
+CMakeFiles/Server.dir/view/login_view.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/view/login_view.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/view/login_view.c > CMakeFiles/Server.dir/view/login_view.c.i
+
+CMakeFiles/Server.dir/view/login_view.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/view/login_view.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/view/login_view.c -o CMakeFiles/Server.dir/view/login_view.c.s
+
+CMakeFiles/Server.dir/view/register_view.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/view/register_view.c.o: ../view/register_view.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/Server.dir/view/register_view.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/view/register_view.c.o   -c /home/an/Documents/GitHub/BattelShip/view/register_view.c
+
+CMakeFiles/Server.dir/view/register_view.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/view/register_view.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/view/register_view.c > CMakeFiles/Server.dir/view/register_view.c.i
+
+CMakeFiles/Server.dir/view/register_view.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/view/register_view.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/view/register_view.c -o CMakeFiles/Server.dir/view/register_view.c.s
+
+CMakeFiles/Server.dir/controller/register.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/controller/register.c.o: ../controller/register.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/Server.dir/controller/register.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/controller/register.c.o   -c /home/an/Documents/GitHub/BattelShip/controller/register.c
+
+CMakeFiles/Server.dir/controller/register.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/controller/register.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/controller/register.c > CMakeFiles/Server.dir/controller/register.c.i
+
+CMakeFiles/Server.dir/controller/register.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/controller/register.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/controller/register.c -o CMakeFiles/Server.dir/controller/register.c.s
+
+CMakeFiles/Server.dir/controller/login.c.o: CMakeFiles/Server.dir/flags.make
+CMakeFiles/Server.dir/controller/login.c.o: ../controller/login.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Server.dir/controller/login.c.o"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Server.dir/controller/login.c.o   -c /home/an/Documents/GitHub/BattelShip/controller/login.c
+
+CMakeFiles/Server.dir/controller/login.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Server.dir/controller/login.c.i"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/an/Documents/GitHub/BattelShip/controller/login.c > CMakeFiles/Server.dir/controller/login.c.i
+
+CMakeFiles/Server.dir/controller/login.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Server.dir/controller/login.c.s"
+	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/an/Documents/GitHub/BattelShip/controller/login.c -o CMakeFiles/Server.dir/controller/login.c.s
 
 # Object files for target Server
 Server_OBJECTS = \
 "CMakeFiles/Server.dir/server.c.o" \
-"CMakeFiles/Server.dir/auth.c.o" \
-"CMakeFiles/Server.dir/ui/ui.c.o"
+"CMakeFiles/Server.dir/model/auth.c.o" \
+"CMakeFiles/Server.dir/model/network.c.o" \
+"CMakeFiles/Server.dir/view/base_view.c.o" \
+"CMakeFiles/Server.dir/view/login_view.c.o" \
+"CMakeFiles/Server.dir/view/register_view.c.o" \
+"CMakeFiles/Server.dir/controller/register.c.o" \
+"CMakeFiles/Server.dir/controller/login.c.o"
 
 # External object files for target Server
 Server_EXTERNAL_OBJECTS =
 
 Server: CMakeFiles/Server.dir/server.c.o
-Server: CMakeFiles/Server.dir/auth.c.o
-Server: CMakeFiles/Server.dir/ui/ui.c.o
+Server: CMakeFiles/Server.dir/model/auth.c.o
+Server: CMakeFiles/Server.dir/model/network.c.o
+Server: CMakeFiles/Server.dir/view/base_view.c.o
+Server: CMakeFiles/Server.dir/view/login_view.c.o
+Server: CMakeFiles/Server.dir/view/register_view.c.o
+Server: CMakeFiles/Server.dir/controller/register.c.o
+Server: CMakeFiles/Server.dir/controller/login.c.o
 Server: CMakeFiles/Server.dir/build.make
 Server: CMakeFiles/Server.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable Server"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/an/Documents/GitHub/BattelShip/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Linking C executable Server"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Server.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

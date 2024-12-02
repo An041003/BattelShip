@@ -3,6 +3,14 @@
 
 #include <stdbool.h> 
 
+#define PORT 8080
+#define BUFFER_SIZE 1024
+
+#define DB_HOST "localhost"
+#define DB_USER "phuong"
+#define DB_PASS "Tranphuong1253*"
+#define DB_NAME "battle_ship"
+
 // Đăng ký/Đăng nhập
 #define REGISTER "REGISTER"
 #define REGISTER_SUCCESS "REGISTER_SUCCESS"

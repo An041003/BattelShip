@@ -1,7 +1,12 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/Server.dir/auth.c.o"
+  "CMakeFiles/Server.dir/controller/login.c.o"
+  "CMakeFiles/Server.dir/controller/register.c.o"
+  "CMakeFiles/Server.dir/model/auth.c.o"
+  "CMakeFiles/Server.dir/model/network.c.o"
   "CMakeFiles/Server.dir/server.c.o"
-  "CMakeFiles/Server.dir/ui/ui.c.o"
+  "CMakeFiles/Server.dir/view/base_view.c.o"
+  "CMakeFiles/Server.dir/view/login_view.c.o"
+  "CMakeFiles/Server.dir/view/register_view.c.o"
   "Server"
   "Server.pdb"
 )

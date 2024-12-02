@@ -136,36 +136,6 @@ Server/fast:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/build
 .PHONY : Server/fast
 
-auth.o: auth.c.o
-
-.PHONY : auth.o
-
-# target to build an object file
-auth.c.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/auth.c.o
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/auth.c.o
-.PHONY : auth.c.o
-
-auth.i: auth.c.i
-
-.PHONY : auth.i
-
-# target to preprocess a source file
-auth.c.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/auth.c.i
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/auth.c.i
-.PHONY : auth.c.i
-
-auth.s: auth.c.s
-
-.PHONY : auth.s
-
-# target to generate assembly for a file
-auth.c.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/auth.c.s
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/auth.c.s
-.PHONY : auth.c.s
-
 client.o: client.c.o
 
 .PHONY : client.o
@@ -192,6 +162,126 @@ client.s: client.c.s
 client.c.s:
 	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/client.c.s
 .PHONY : client.c.s
+
+controller/login.o: controller/login.c.o
+
+.PHONY : controller/login.o
+
+# target to build an object file
+controller/login.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/login.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/login.c.o
+.PHONY : controller/login.c.o
+
+controller/login.i: controller/login.c.i
+
+.PHONY : controller/login.i
+
+# target to preprocess a source file
+controller/login.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/login.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/login.c.i
+.PHONY : controller/login.c.i
+
+controller/login.s: controller/login.c.s
+
+.PHONY : controller/login.s
+
+# target to generate assembly for a file
+controller/login.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/login.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/login.c.s
+.PHONY : controller/login.c.s
+
+controller/register.o: controller/register.c.o
+
+.PHONY : controller/register.o
+
+# target to build an object file
+controller/register.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/register.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/register.c.o
+.PHONY : controller/register.c.o
+
+controller/register.i: controller/register.c.i
+
+.PHONY : controller/register.i
+
+# target to preprocess a source file
+controller/register.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/register.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/register.c.i
+.PHONY : controller/register.c.i
+
+controller/register.s: controller/register.c.s
+
+.PHONY : controller/register.s
+
+# target to generate assembly for a file
+controller/register.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/controller/register.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/controller/register.c.s
+.PHONY : controller/register.c.s
+
+model/auth.o: model/auth.c.o
+
+.PHONY : model/auth.o
+
+# target to build an object file
+model/auth.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/auth.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/auth.c.o
+.PHONY : model/auth.c.o
+
+model/auth.i: model/auth.c.i
+
+.PHONY : model/auth.i
+
+# target to preprocess a source file
+model/auth.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/auth.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/auth.c.i
+.PHONY : model/auth.c.i
+
+model/auth.s: model/auth.c.s
+
+.PHONY : model/auth.s
+
+# target to generate assembly for a file
+model/auth.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/auth.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/auth.c.s
+.PHONY : model/auth.c.s
+
+model/network.o: model/network.c.o
+
+.PHONY : model/network.o
+
+# target to build an object file
+model/network.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/network.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/network.c.o
+.PHONY : model/network.c.o
+
+model/network.i: model/network.c.i
+
+.PHONY : model/network.i
+
+# target to preprocess a source file
+model/network.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/network.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/network.c.i
+.PHONY : model/network.c.i
+
+model/network.s: model/network.c.s
+
+.PHONY : model/network.s
+
+# target to generate assembly for a file
+model/network.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/model/network.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/model/network.c.s
+.PHONY : model/network.c.s
 
 server.o: server.c.o
 
@@ -220,35 +310,95 @@ server.c.s:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/server.c.s
 .PHONY : server.c.s
 
-ui/ui.o: ui/ui.c.o
+view/base_view.o: view/base_view.c.o
 
-.PHONY : ui/ui.o
+.PHONY : view/base_view.o
 
 # target to build an object file
-ui/ui.c.o:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.o
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.o
-.PHONY : ui/ui.c.o
+view/base_view.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/base_view.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/base_view.c.o
+.PHONY : view/base_view.c.o
 
-ui/ui.i: ui/ui.c.i
+view/base_view.i: view/base_view.c.i
 
-.PHONY : ui/ui.i
+.PHONY : view/base_view.i
 
 # target to preprocess a source file
-ui/ui.c.i:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.i
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.i
-.PHONY : ui/ui.c.i
+view/base_view.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/base_view.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/base_view.c.i
+.PHONY : view/base_view.c.i
 
-ui/ui.s: ui/ui.c.s
+view/base_view.s: view/base_view.c.s
 
-.PHONY : ui/ui.s
+.PHONY : view/base_view.s
 
 # target to generate assembly for a file
-ui/ui.c.s:
-	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/ui/ui.c.s
-	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/ui/ui.c.s
-.PHONY : ui/ui.c.s
+view/base_view.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/base_view.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/base_view.c.s
+.PHONY : view/base_view.c.s
+
+view/login_view.o: view/login_view.c.o
+
+.PHONY : view/login_view.o
+
+# target to build an object file
+view/login_view.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/login_view.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/login_view.c.o
+.PHONY : view/login_view.c.o
+
+view/login_view.i: view/login_view.c.i
+
+.PHONY : view/login_view.i
+
+# target to preprocess a source file
+view/login_view.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/login_view.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/login_view.c.i
+.PHONY : view/login_view.c.i
+
+view/login_view.s: view/login_view.c.s
+
+.PHONY : view/login_view.s
+
+# target to generate assembly for a file
+view/login_view.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/login_view.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/login_view.c.s
+.PHONY : view/login_view.c.s
+
+view/register_view.o: view/register_view.c.o
+
+.PHONY : view/register_view.o
+
+# target to build an object file
+view/register_view.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/register_view.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/register_view.c.o
+.PHONY : view/register_view.c.o
+
+view/register_view.i: view/register_view.c.i
+
+.PHONY : view/register_view.i
+
+# target to preprocess a source file
+view/register_view.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/register_view.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/register_view.c.i
+.PHONY : view/register_view.c.i
+
+view/register_view.s: view/register_view.c.s
+
+.PHONY : view/register_view.s
+
+# target to generate assembly for a file
+view/register_view.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/register_view.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/register_view.c.s
+.PHONY : view/register_view.c.s
 
 # Help Target
 help:
@@ -260,18 +410,33 @@ help:
 	@echo "... edit_cache"
 	@echo "... Client"
 	@echo "... Server"
-	@echo "... auth.o"
-	@echo "... auth.i"
-	@echo "... auth.s"
 	@echo "... client.o"
 	@echo "... client.i"
 	@echo "... client.s"
+	@echo "... controller/login.o"
+	@echo "... controller/login.i"
+	@echo "... controller/login.s"
+	@echo "... controller/register.o"
+	@echo "... controller/register.i"
+	@echo "... controller/register.s"
+	@echo "... model/auth.o"
+	@echo "... model/auth.i"
+	@echo "... model/auth.s"
+	@echo "... model/network.o"
+	@echo "... model/network.i"
+	@echo "... model/network.s"
 	@echo "... server.o"
 	@echo "... server.i"
 	@echo "... server.s"
-	@echo "... ui/ui.o"
-	@echo "... ui/ui.i"
-	@echo "... ui/ui.s"
+	@echo "... view/base_view.o"
+	@echo "... view/base_view.i"
+	@echo "... view/base_view.s"
+	@echo "... view/login_view.o"
+	@echo "... view/login_view.i"
+	@echo "... view/login_view.s"
+	@echo "... view/register_view.o"
+	@echo "... view/register_view.i"
+	@echo "... view/register_view.s"
 .PHONY : help
 
 

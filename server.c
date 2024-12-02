@@ -3,43 +3,53 @@
 #include <string.h>
 #include <unistd.h>
 #include <arpa/inet.h>
-#include <mysql/mysql.h>
-#include "auth.h" 
+#include <pthread.h>
 #include "protocol.h"
+#include "model/auth.h"
+#include "controller/register.h"
+#include "controller/login.h"
 
-#define PORT 8080
-#define MAX_PLAYERS 2
-#define BUFFER_SIZE 1024
+// Hàm xử lý từng client trong một thread riêng
+void *client_handler(void *arg) {
+    int client_socket = *(int *)arg;
+    free(arg); // Giải phóng bộ nhớ cấp phát động
+    MYSQL *conn = connect_database();
 
-#define DB_HOST "localhost"
-#define DB_USER "phuong"
-#define DB_PASS "Tranphuong1253*"
-#define DB_NAME "battle_ship"
-
-MYSQL *connectDatabase() {
-    MYSQL *conn = mysql_init(NULL);
     if (conn == NULL) {
-        fprintf(stderr, "mysql_init() failed\n");
+        send(client_socket, "Database connection failed. Disconnecting...\n", 45, 0);
+        close(client_socket);
         return NULL;
     }
-    if (mysql_real_connect(conn, DB_HOST, DB_USER, DB_PASS, DB_NAME, 0, NULL, 0) == NULL) {
-        fprintf(stderr, "mysql_real_connect() failed\n");
-        mysql_close(conn);
-        return NULL;
+
+    char buffer[BUFFER_SIZE];
+    while (1) {
+        memset(buffer, 0, sizeof(buffer));
+        send(client_socket, "Type 'LOGIN', 'REGISTER', or 'FIND_MATCH': ", 42, 0);
+        if (read(client_socket, buffer, sizeof(buffer)) <= 0) {
+            printf("Client disconnected.\n");
+            break;
+        }
+
+        if (strncmp(buffer, REGISTER, strlen(REGISTER)) == 0) {
+            handle_register(client_socket, conn);
+        } else if (strncmp(buffer, LOGIN, strlen(LOGIN)) == 0) {
+            handle_login(client_socket, conn);
+        } else if (strncmp(buffer, FIND_MATCH, strlen(FIND_MATCH)) == 0) {
+            send(client_socket, "Matchmaking feature not implemented yet.\n", 42, 0);
+        } else {
+            send(client_socket, "Invalid command.\n", 18, 0);
+        }
     }
-    return conn;
+
+    mysql_close(conn);
+    close(client_socket);
+    return NULL;
 }
 
 int main() {
-     MYSQL *conn = connectDatabase();
-    if (conn == NULL) {
-        return 1;
-    }
-
-    int server_fd, new_socket, players[MAX_PLAYERS] = {0}, player_count = 0;
+    int server_fd;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
-    char buffer[BUFFER_SIZE] = {0};
 
     // Tạo socket
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
@@ -58,74 +68,36 @@ int main() {
         exit(EXIT_FAILURE);
     }
 
-    if (listen(server_fd, 3) < 0) {
+    if (listen(server_fd, 10) < 0) { // Lắng nghe tối đa 10 kết nối đang chờ
         perror("Listen failed");
         close(server_fd);
         exit(EXIT_FAILURE);
     }
-    printf("Waiting for players...\n");
 
-    while (player_count < MAX_PLAYERS) {
-        if ((new_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0) {
+    printf("Server running on port %d\n", PORT);
+
+    while (1) {
+        int *client_socket = malloc(sizeof(int));
+        if ((*client_socket = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen)) < 0) {
             perror("Accept failed");
+            free(client_socket);
             continue;
         }
 
-        // Yêu cầu người dùng chọn LOGIN hoặc REGISTER
-        send(new_socket, "Type 'LOGIN' to log in or 'REGISTER' to create a new account: ", strlen("Type 'LOGIN' to log in or 'REGISTER' to create a new account: "), 0);
-        read(new_socket, buffer, BUFFER_SIZE);
+        printf("New client connected.\n");
 
-        if (strncmp(buffer, REGISTER, 8) == 0) {
-            // Xử lý đăng ký
-            send(new_socket, "Username: ", strlen("Username: "), 0);
-            read(new_socket, buffer, BUFFER_SIZE);
-            char username[50];
-            strcpy(username, buffer);
-
-            send(new_socket, "Password: ", strlen("Password: "), 0);
-            read(new_socket, buffer, BUFFER_SIZE);
-            char password[50];
-            strcpy(password, buffer);
-
-            if (register_account(username, password,conn)) {
-                send(new_socket, "Registration successful! Please reconnect to log in.\n", strlen("Registration successful! Please reconnect to log in.\n"), 0);
-            } else {
-                send(new_socket, "Registration failed. Username may already exist.\n", strlen("Registration failed. Username may already exist.\n"), 0);
-            }
-            close(new_socket);
-        } else if (strncmp(buffer, LOGIN, 5) == 0) {
-            // Xử lý đăng nhập
-            send(new_socket, "Username: ", strlen("Username: "), 0);
-            read(new_socket, buffer, BUFFER_SIZE);
-            char username[50];
-            strcpy(username, buffer);
-
-            send(new_socket, "Password: ", strlen("Password: "), 0);
-            read(new_socket, buffer, BUFFER_SIZE);
-            char password[50];
-            strcpy(password, buffer);
-
-            char session_id[20];
-            if (login_account(username, password, conn)) {
-                printf("Player %d logged in successfully.\n", player_count + 1);
-                players[player_count++] = new_socket;
-                send(new_socket, LOGIN_SUCCESS, strlen(LOGIN_SUCCESS), 0);
-            } else {
-                send(new_socket, "Login failed. Disconnecting...\n", strlen("Login failed. Disconnecting...\n"), 0);
-                close(new_socket);
-            }
-        } else {
-            send(new_socket, "Invalid option. Disconnecting...\n", strlen("Invalid option. Disconnecting...\n"), 0);
-            close(new_socket);
+        // Tạo một thread mới để xử lý client
+        pthread_t thread_id;
+        if (pthread_create(&thread_id, NULL, client_handler, client_socket) != 0) {
+            perror("Failed to create thread");
+            free(client_socket);
+            continue;
         }
-    }
-    printf("Both players connected. Game starting...\n");
 
-    // Game logic sẽ thêm vào đây
-
-    for (int i = 0; i < MAX_PLAYERS; i++) {
-        close(players[i]);
+        // Detach thread để tự động thu hồi tài nguyên sau khi kết thúc
+        pthread_detach(thread_id);
     }
+
     close(server_fd);
     return 0;
 }
