@@ -22,6 +22,5 @@ bool cleanup_view(SDL_Window **window, SDL_Renderer **renderer);
 void draw_button(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, const char *text, TTF_Font *font);
 // Hàm để hiển thị text
 void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color color, TTF_Font *font);
-void render_text(SDL_Renderer *renderer, const char *text);
 
 #endif

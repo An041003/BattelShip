@@ -6,10 +6,11 @@
 #define PORT 8080
 #define BUFFER_SIZE 1024
 
-#define DB_HOST "localhost"
-#define DB_USER "phuong"
-#define DB_PASS "Tranphuong1253*"
+#define DB_HOST "battle-ship-phuongxxx971022-4df8.c.aivencloud.com"
+#define DB_USER "avnadmin"
+#define DB_PASS "AVNS_lECCc4owrRuPx3Zjr0e"
 #define DB_NAME "battle_ship"
+#define DB_POST 16578
 
 // Đăng ký/Đăng nhập
 #define REGISTER "REGISTER"

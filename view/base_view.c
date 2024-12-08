@@ -89,16 +89,3 @@ void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color
     SDL_FreeSurface(text_surface);
     SDL_DestroyTexture(text_texture);
 }
-void render_text(SDL_Renderer *renderer, const char *text) {
-    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
-    if (font) {
-        SDL_Color color = {255, 255, 255}; 
-        SDL_Surface *text_surface = TTF_RenderText_Solid(font, text, color);
-        SDL_Texture *text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
-        SDL_Rect text_rect = {100, 100, text_surface->w, text_surface->h};
-        SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
-        SDL_FreeSurface(text_surface);
-        SDL_DestroyTexture(text_texture);
-        TTF_CloseFont(font);
-    }
-}

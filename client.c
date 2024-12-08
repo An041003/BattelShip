@@ -24,7 +24,6 @@ int main()
     int sock = connect_to_server("127.0.0.1", PORT);
     if (sock < 0)
     {
-        render_text(renderer, "Failed to connect to server.");
         SDL_Delay(2000);
         cleanup_view(window, renderer);
         return -1;
@@ -48,8 +47,7 @@ int main()
         case -1: // Thoát
             running = false;
             break;
-        default: // Lựa chọn không hợp lệ
-            render_text(renderer, "Invalid choice.");
+        default: 
             SDL_Delay(1000);
             break;
         }
