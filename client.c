@@ -15,7 +15,7 @@ int main()
     SDL_Renderer *renderer = NULL;
 
     // Khởi tạo SDL và cửa sổ
-    if (!init_view(&window, &renderer))
+    if (!init_sdl("",1280,720,&window, &renderer))
     {
         return -1;
     }

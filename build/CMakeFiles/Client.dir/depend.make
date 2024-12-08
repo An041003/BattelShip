@@ -6,6 +6,7 @@ CMakeFiles/Client.dir/client.c.o: ../model/network.h
 CMakeFiles/Client.dir/client.c.o: ../protocol.h
 CMakeFiles/Client.dir/client.c.o: ../view/base_view.h
 CMakeFiles/Client.dir/client.c.o: ../view/login_view.h
+CMakeFiles/Client.dir/client.c.o: ../view/menu_view.h
 CMakeFiles/Client.dir/client.c.o: ../view/register_view.h
 
 CMakeFiles/Client.dir/controller/login.c.o: ../controller/login.c
@@ -30,13 +31,15 @@ CMakeFiles/Client.dir/view/base_view.c.o: ../view/base_view.h
 
 CMakeFiles/Client.dir/view/login_view.c.o: ../model/network.h
 CMakeFiles/Client.dir/view/login_view.c.o: ../protocol.h
-CMakeFiles/Client.dir/view/login_view.c.o: ../view/base_view.h
 CMakeFiles/Client.dir/view/login_view.c.o: ../view/login_view.c
 CMakeFiles/Client.dir/view/login_view.c.o: ../view/login_view.h
 
+CMakeFiles/Client.dir/view/menu_view.c.o: ../view/base_view.h
+CMakeFiles/Client.dir/view/menu_view.c.o: ../view/menu_view.c
+CMakeFiles/Client.dir/view/menu_view.c.o: ../view/menu_view.h
+
 CMakeFiles/Client.dir/view/register_view.c.o: ../model/network.h
 CMakeFiles/Client.dir/view/register_view.c.o: ../protocol.h
-CMakeFiles/Client.dir/view/register_view.c.o: ../view/base_view.h
 CMakeFiles/Client.dir/view/register_view.c.o: ../view/register_view.c
 CMakeFiles/Client.dir/view/register_view.c.o: ../view/register_view.h
 

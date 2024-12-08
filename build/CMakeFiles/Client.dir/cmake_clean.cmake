@@ -6,6 +6,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/Client.dir/model/network.c.o"
   "CMakeFiles/Client.dir/view/base_view.c.o"
   "CMakeFiles/Client.dir/view/login_view.c.o"
+  "CMakeFiles/Client.dir/view/menu_view.c.o"
   "CMakeFiles/Client.dir/view/register_view.c.o"
   "Client"
   "Client.pdb"

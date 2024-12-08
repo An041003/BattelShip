@@ -370,6 +370,36 @@ view/login_view.c.s:
 	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/login_view.c.s
 .PHONY : view/login_view.c.s
 
+view/menu_view.o: view/menu_view.c.o
+
+.PHONY : view/menu_view.o
+
+# target to build an object file
+view/menu_view.c.o:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/menu_view.c.o
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/menu_view.c.o
+.PHONY : view/menu_view.c.o
+
+view/menu_view.i: view/menu_view.c.i
+
+.PHONY : view/menu_view.i
+
+# target to preprocess a source file
+view/menu_view.c.i:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/menu_view.c.i
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/menu_view.c.i
+.PHONY : view/menu_view.c.i
+
+view/menu_view.s: view/menu_view.c.s
+
+.PHONY : view/menu_view.s
+
+# target to generate assembly for a file
+view/menu_view.c.s:
+	$(MAKE) -f CMakeFiles/Client.dir/build.make CMakeFiles/Client.dir/view/menu_view.c.s
+	$(MAKE) -f CMakeFiles/Server.dir/build.make CMakeFiles/Server.dir/view/menu_view.c.s
+.PHONY : view/menu_view.c.s
+
 view/register_view.o: view/register_view.c.o
 
 .PHONY : view/register_view.o
@@ -434,6 +464,9 @@ help:
 	@echo "... view/login_view.o"
 	@echo "... view/login_view.i"
 	@echo "... view/login_view.s"
+	@echo "... view/menu_view.o"
+	@echo "... view/menu_view.i"
+	@echo "... view/menu_view.s"
 	@echo "... view/register_view.o"
 	@echo "... view/register_view.i"
 	@echo "... view/register_view.s"

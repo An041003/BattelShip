@@ -11,6 +11,7 @@ set(CMAKE_DEPENDS_CHECK_C
   "/home/an/Documents/GitHub/BattelShip/model/network.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir/model/network.c.o"
   "/home/an/Documents/GitHub/BattelShip/view/base_view.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir/view/base_view.c.o"
   "/home/an/Documents/GitHub/BattelShip/view/login_view.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir/view/login_view.c.o"
+  "/home/an/Documents/GitHub/BattelShip/view/menu_view.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir/view/menu_view.c.o"
   "/home/an/Documents/GitHub/BattelShip/view/register_view.c" "/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir/view/register_view.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")

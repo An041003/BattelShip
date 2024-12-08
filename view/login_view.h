@@ -6,5 +6,5 @@
 
 // Hàm để render giao diện đăng nhập
 void render_login(SDL_Renderer *renderer, TTF_Font *font, char *username, char *password);
-
+void login_view(SDL_Renderer *renderer, int sock);
 #endif

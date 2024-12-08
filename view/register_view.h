@@ -6,5 +6,6 @@
 
 // Hàm để render giao diện đăng ký
 void render_register(SDL_Renderer *renderer, TTF_Font *font, char *username, char *password);
+void register_view(SDL_Renderer *renderer, int sock);
 
 #endif

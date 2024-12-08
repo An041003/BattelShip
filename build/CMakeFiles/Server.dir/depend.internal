@@ -30,12 +30,14 @@ CMakeFiles/Server.dir/view/base_view.c.o
 CMakeFiles/Server.dir/view/login_view.c.o
  /home/an/Documents/GitHub/BattelShip/model/network.h
  /home/an/Documents/GitHub/BattelShip/protocol.h
- /home/an/Documents/GitHub/BattelShip/view/base_view.h
  /home/an/Documents/GitHub/BattelShip/view/login_view.c
  /home/an/Documents/GitHub/BattelShip/view/login_view.h
+CMakeFiles/Server.dir/view/menu_view.c.o
+ /home/an/Documents/GitHub/BattelShip/view/base_view.h
+ /home/an/Documents/GitHub/BattelShip/view/menu_view.c
+ /home/an/Documents/GitHub/BattelShip/view/menu_view.h
 CMakeFiles/Server.dir/view/register_view.c.o
  /home/an/Documents/GitHub/BattelShip/model/network.h
  /home/an/Documents/GitHub/BattelShip/protocol.h
- /home/an/Documents/GitHub/BattelShip/view/base_view.h
  /home/an/Documents/GitHub/BattelShip/view/register_view.c
  /home/an/Documents/GitHub/BattelShip/view/register_view.h

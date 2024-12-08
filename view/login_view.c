@@ -2,7 +2,9 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <string.h>
-
+#include "../protocol.h"
+#include "../model/network.h"
+#include <stdbool.h>
 void render_login(SDL_Renderer *renderer, TTF_Font *font, char *username, char *password)
 {
     SDL_SetRenderDrawColor(renderer, 20, 20, 50, 255);
@@ -47,4 +49,80 @@ void render_login(SDL_Renderer *renderer, TTF_Font *font, char *username, char *
     SDL_FreeSurface(login_surface);
 
     SDL_RenderPresent(renderer);
+}
+
+void login_view(SDL_Renderer *renderer, int sock) {
+    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24); 
+    if (!font) {
+        printf("Failed to load font: %s\n", TTF_GetError());
+        return;
+    }
+
+    char username[256] = {0}; // Tên người dùng
+    char password[256] = {0}; // Mật khẩu
+    bool login_running = true;
+    bool input_username = true; // Trạng thái: nhập tên người dùng hay mật khẩu
+    int cursor_pos = 0;         // Vị trí con trỏ nhập liệu
+
+    while (login_running) {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                login_running = false;
+            }
+            if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_TAB) {
+                    // Chuyển đổi giữa nhập tên và mật khẩu
+                    input_username = !input_username;
+                    cursor_pos = 0;
+                } else if (event.key.keysym.sym == SDLK_BACKSPACE) {
+                    // Xóa ký tự
+                    if (cursor_pos > 0) {
+                        if (input_username) {
+                            username[--cursor_pos] = '\0';
+                        } else {
+                            password[--cursor_pos] = '\0';
+                        }
+                    }
+                } else if (event.key.keysym.sym == SDLK_RETURN) {
+                    // Gửi dữ liệu đăng nhập khi nhấn Enter
+                    if (strlen(username) > 0 && strlen(password) > 0) {
+                        char login_request[512];
+                        snprintf(login_request, sizeof(login_request), "LOGIN %s %s", username, password);
+                        send(sock, login_request, strlen(login_request), 0);
+
+                        // Nhận phản hồi từ máy chủ
+                        char response[256];
+                        int bytes_received = recv(sock, response, sizeof(response) - 1, 0);
+                        response[bytes_received] = '\0';
+
+                        if (strcmp(response, "LOGIN_SUCCESS") == 0) {
+                            printf("Login successful!\n");
+                            login_running = false;
+                        } else {
+                            printf("Login failed: %s\n", response);
+                        }
+                    }
+                } else if (event.key.keysym.sym == SDLK_ESCAPE) {
+                    login_running = false; // Thoát giao diện đăng nhập
+                } else if (event.key.keysym.sym >= SDLK_SPACE && event.key.keysym.sym <= SDLK_z) {
+                    // Nhập ký tự
+                    if (cursor_pos < 255) {
+                        if (input_username) {
+                            username[cursor_pos++] = (char)event.key.keysym.sym;
+                            username[cursor_pos] = '\0';
+                        } else {
+                            password[cursor_pos++] = (char)event.key.keysym.sym;
+                            password[cursor_pos] = '\0';
+                        }
+                    }
+                }
+            }
+        }
+
+        // Hiển thị giao diện đăng nhập
+        render_login(renderer, font, username, password);
+    }
+
+    TTF_CloseFont(font);
 }

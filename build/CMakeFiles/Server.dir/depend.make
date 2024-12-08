@@ -29,13 +29,15 @@ CMakeFiles/Server.dir/view/base_view.c.o: ../view/base_view.h
 
 CMakeFiles/Server.dir/view/login_view.c.o: ../model/network.h
 CMakeFiles/Server.dir/view/login_view.c.o: ../protocol.h
-CMakeFiles/Server.dir/view/login_view.c.o: ../view/base_view.h
 CMakeFiles/Server.dir/view/login_view.c.o: ../view/login_view.c
 CMakeFiles/Server.dir/view/login_view.c.o: ../view/login_view.h
 
+CMakeFiles/Server.dir/view/menu_view.c.o: ../view/base_view.h
+CMakeFiles/Server.dir/view/menu_view.c.o: ../view/menu_view.c
+CMakeFiles/Server.dir/view/menu_view.c.o: ../view/menu_view.h
+
 CMakeFiles/Server.dir/view/register_view.c.o: ../model/network.h
 CMakeFiles/Server.dir/view/register_view.c.o: ../protocol.h
-CMakeFiles/Server.dir/view/register_view.c.o: ../view/base_view.h
 CMakeFiles/Server.dir/view/register_view.c.o: ../view/register_view.c
 CMakeFiles/Server.dir/view/register_view.c.o: ../view/register_view.h
 

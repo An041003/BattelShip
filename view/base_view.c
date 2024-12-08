@@ -1,5 +1,6 @@
 #include "base_view.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 // Hàm để khởi tạo SDL và TTF
 bool init_sdl(const char *window_title, int width, int height, SDL_Window **window, SDL_Renderer **renderer)
@@ -38,7 +39,17 @@ bool init_sdl(const char *window_title, int width, int height, SDL_Window **wind
 
     return true;
 }
-
+bool cleanup_view(SDL_Window **window, SDL_Renderer **renderer){
+    if (renderer) {
+        SDL_DestroyRenderer(*renderer);
+    }
+    if (window) {
+        SDL_DestroyWindow(*window);
+    }
+    SDL_Quit();
+    TTF_Quit();
+    return true;
+};
 // Hàm để vẽ nút (Button)
 void draw_button(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, const char *text, TTF_Font *font)
 {
@@ -77,4 +88,17 @@ void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color
 
     SDL_FreeSurface(text_surface);
     SDL_DestroyTexture(text_texture);
+}
+void render_text(SDL_Renderer *renderer, const char *text) {
+    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
+    if (font) {
+        SDL_Color color = {255, 255, 255}; 
+        SDL_Surface *text_surface = TTF_RenderText_Solid(font, text, color);
+        SDL_Texture *text_texture = SDL_CreateTextureFromSurface(renderer, text_surface);
+        SDL_Rect text_rect = {100, 100, text_surface->w, text_surface->h};
+        SDL_RenderCopy(renderer, text_texture, NULL, &text_rect);
+        SDL_FreeSurface(text_surface);
+        SDL_DestroyTexture(text_texture);
+        TTF_CloseFont(font);
+    }
 }
