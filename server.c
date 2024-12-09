@@ -54,6 +54,7 @@ int main() {
     int server_fd;
     struct sockaddr_in address;
     int addrlen = sizeof(address);
+    
 
     // Tạo socket
     if ((server_fd = socket(AF_INET, SOCK_STREAM, 0)) == 0) {
