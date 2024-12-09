@@ -114,3 +114,16 @@ bool login_account(const char *username, const char *password, MYSQL *conn)
     return authSuccess; 
 
 }
+
+
+//hàm này cập nhập điểm của 1 người sau khi kết thúc một trận đấu
+void update_elo(MYSQL *conn, int grade, int playerId){
+    char query[256];
+    snprintf(query, sizeof(query), "UPDATE users SET elo = grade + elo WHERE id = %d ",playerId, playerId);
+    if (mysql_query(conn, query)) {
+        fprintf(stderr, "Authentication query failed: %s\n", mysql_error(conn));
+    }
+     fprintf(stderr, "Updated\n");
+}
+
+

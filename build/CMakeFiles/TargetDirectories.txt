@@ -1,4 +1,0 @@
-/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/rebuild_cache.dir
-/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/edit_cache.dir
-/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Client.dir
-/home/an/Documents/GitHub/BattelShip/build/CMakeFiles/Server.dir
