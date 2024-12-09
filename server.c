@@ -12,7 +12,7 @@
 // Hàm xử lý từng client trong một thread riêng
 void *client_handler(void *arg) {
     int client_socket = *(int *)arg;
-    free(arg); // Giải phóng bộ nhớ cấp phát động
+    free(arg);
     MYSQL *conn = connect_database();
 
     if (conn == NULL) {
@@ -22,17 +22,20 @@ void *client_handler(void *arg) {
     }
 
     char buffer[BUFFER_SIZE];
+    
     while (1) {
         memset(buffer, 0, sizeof(buffer));
-        send(client_socket, "Type 'LOGIN', 'REGISTER', or 'FIND_MATCH': ", 42, 0);
+        
         if (read(client_socket, buffer, sizeof(buffer)) <= 0) {
             printf("Client disconnected.\n");
             break;
         }
 
         if (strncmp(buffer, REGISTER, strlen(REGISTER)) == 0) {
+            send(client_socket, "REGISTER.\n", 18, 0);
             handle_register(client_socket, conn);
         } else if (strncmp(buffer, LOGIN, strlen(LOGIN)) == 0) {
+            send(client_socket, "LOGIN.\n", 18, 0);
             handle_login(client_socket, conn);
         } else if (strncmp(buffer, FIND_MATCH, strlen(FIND_MATCH)) == 0) {
             send(client_socket, "Matchmaking feature not implemented yet.\n", 42, 0);
@@ -45,6 +48,7 @@ void *client_handler(void *arg) {
     close(client_socket);
     return NULL;
 }
+
 
 int main() {
     int server_fd;

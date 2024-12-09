@@ -13,6 +13,7 @@ set(COMMON_SOURCES
     view/login_view.c
     view/register_view.c
     view/menu_view.c
+    view/home_view.c
     controller/register.c
     controller/login.c
 )

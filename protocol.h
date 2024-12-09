@@ -3,7 +3,7 @@
 
 #include <stdbool.h> 
 
-#define PORT 8080
+#define PORT 8000
 #define BUFFER_SIZE 1024
 
 #define DB_HOST "battle-ship-phuongxxx971022-4df8.c.aivencloud.com"

@@ -3,21 +3,28 @@
 #include "../protocol.h"
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h> 
 
 void handle_login(int client_socket, MYSQL *conn) {
-    char username[50], password[50], buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE];
+    char command[10], username[50], password[50];
 
-    send(client_socket, "Username: ", strlen("Username: "), 0);
-    read(client_socket, buffer, sizeof(buffer));
-    strcpy(username, buffer);
+    int bytes_received = read(client_socket, buffer, sizeof(buffer) - 1);
+    if (bytes_received <= 0) {
+        perror("Error reading from client");
+        return;
+    }
+    buffer[bytes_received] = '\0'; 
 
-    send(client_socket, "Password: ", strlen("Password: "), 0);
-    read(client_socket, buffer, sizeof(buffer));
-    strcpy(password, buffer);
+    if (sscanf(buffer, "%s %s %s", command, username, password) != 3 || strcmp(command, "LOGIN") != 0) {
+        send(client_socket, "Invalid command format.\n", 24, 0);
+        return;
+    }
 
+    // Gọi hàm xử lý đăng ký
     if (login_account(username, password, conn)) {
-        send(client_socket, "Login successful.\n", 19, 0);
+        send(client_socket, "LOGIN", strlen("LOGIN"), 0); 
     } else {
-        send(client_socket, "Login failed. Try again.\n", 25, 0);
+        send(client_socket, "Username or Password incorrected.\n", 32, 0);
     }
 }
