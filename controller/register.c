@@ -3,21 +3,28 @@
 #include "../protocol.h"
 #include <string.h>
 #include <unistd.h>
+#include <stdio.h> 
 
 void handle_register(int client_socket, MYSQL *conn) {
-    char username[50], password[50], buffer[BUFFER_SIZE];
+    char buffer[BUFFER_SIZE];
+    char command[10], username[50], password[50];
 
-    send(client_socket, "Username: ", strlen("Username: "), 0);
-    read(client_socket, buffer, sizeof(buffer));
-    strcpy(username, buffer);
+    int bytes_received = read(client_socket, buffer, sizeof(buffer) - 1);
+    if (bytes_received <= 0) {
+        perror("Error reading from client");
+        return;
+    }
+    buffer[bytes_received] = '\0'; 
 
-    send(client_socket, "Password: ", strlen("Password: "), 0);
-    read(client_socket, buffer, sizeof(buffer));
-    strcpy(password, buffer);
+    if (sscanf(buffer, "%s %s %s", command, username, password) != 3 || strcmp(command, "REGISTER") != 0) {
+        send(client_socket, "Invalid command format.\n", 24, 0);
+        return;
+    }
 
+    // Gọi hàm xử lý đăng ký
     if (register_account(username, password, conn)) {
-        send(client_socket, "Registration successful! Please log in.\n", 39, 0);
+        send(client_socket, "REGISTER", strlen("REGISTER"), 0); 
     } else {
-        send(client_socket, "Registration failed. Username may already exist.\n", 49, 0);
+        send(client_socket, "ERROR: Username already exists.\n", 32, 0);
     }
 }
