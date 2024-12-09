@@ -1,7 +1,8 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
-
+#include "../model/auth.h"
+#include "../protocol.h"
 void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, int elo) {
     // Xóa màn hình với màu nền
     SDL_SetRenderDrawColor(renderer, 50, 50, 200, 255);
@@ -69,8 +70,8 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, i
     SDL_RenderPresent(renderer);
 }
 
-
 void home_view(SDL_Renderer *renderer) {
+    
     TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
     if (!font) {
         printf("Failed to load font: %s\n", TTF_GetError());
@@ -79,13 +80,15 @@ void home_view(SDL_Renderer *renderer) {
 
     bool home_running = true;
     SDL_Event event;
-
+    
     while (home_running) {
         // Vẽ giao diện trang chủ
+        MYSQL *conn;
+        conn = connect_database();
         char username[50];
-        int elo;
+        int elo = get_player_elo(get_player_id(username, conn), conn);
         render_home(renderer, font, username, elo);
-
+        mysql_close(conn);
         // Xử lý sự kiện
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
