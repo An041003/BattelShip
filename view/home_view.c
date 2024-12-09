@@ -2,7 +2,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 
-void render_home(SDL_Renderer *renderer, TTF_Font *font) {
+void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, int elo) {
     // Xóa màn hình với màu nền
     SDL_SetRenderDrawColor(renderer, 50, 50, 200, 255);
     SDL_RenderClear(renderer);
@@ -11,11 +11,21 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font) {
     SDL_Color white = {255, 255, 255};
     SDL_Color blue = {50, 100, 200};
 
-    // Tiêu đề
-    SDL_Surface *title_surface = TTF_RenderText_Solid(font, "Home Page", white);
-    SDL_Texture *title_texture = SDL_CreateTextureFromSurface(renderer, title_surface);
-    SDL_Rect title_rect = {540, 50, 200, 50}; // Tiêu đề ở giữa màn hình
-    SDL_RenderCopy(renderer, title_texture, NULL, &title_rect);
+    // Hiển thị tên người dùng
+    char welcome_text[100];
+    snprintf(welcome_text, sizeof(welcome_text), "Welcome, %s!", username);
+    SDL_Surface *welcome_surface = TTF_RenderText_Solid(font, welcome_text, white);
+    SDL_Texture *welcome_texture = SDL_CreateTextureFromSurface(renderer, welcome_surface);
+    SDL_Rect welcome_rect = {540, 50, 200, 50}; 
+    SDL_RenderCopy(renderer, welcome_texture, NULL, &welcome_rect);
+
+    // Hiển thị điểm Elo
+    char elo_text[50];
+    snprintf(elo_text, sizeof(elo_text), "Elo: %d", elo);
+    SDL_Surface *elo_surface = TTF_RenderText_Solid(font, elo_text, white);
+    SDL_Texture *elo_texture = SDL_CreateTextureFromSurface(renderer, elo_surface);
+    SDL_Rect elo_rect = {540, 100, 200, 50}; 
+    SDL_RenderCopy(renderer, elo_texture, NULL, &elo_rect);
 
     // Định nghĩa các button
     SDL_Rect find_match_btn = {440, 150, 400, 80};
@@ -45,8 +55,6 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font) {
     SDL_RenderCopy(renderer, logout_texture, NULL, &logout_text_rect);
 
     // Giải phóng tài nguyên
-    SDL_DestroyTexture(title_texture);
-    SDL_FreeSurface(title_surface);
 
     SDL_DestroyTexture(find_match_texture);
     SDL_FreeSurface(find_match_surface);
@@ -74,7 +82,9 @@ void home_view(SDL_Renderer *renderer) {
 
     while (home_running) {
         // Vẽ giao diện trang chủ
-        render_home(renderer, font);
+        char username[50];
+        int elo;
+        render_home(renderer, font, username, elo);
 
         // Xử lý sự kiện
         while (SDL_PollEvent(&event)) {

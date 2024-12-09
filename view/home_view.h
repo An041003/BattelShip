@@ -4,7 +4,7 @@
 #include <SDL2/SDL.h>
 
 // Hàm hiển thị giao diện trang chủ
-void render_home(SDL_Renderer *renderer, TTF_Font *font);
+void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, int elo);
 void home_view(SDL_Renderer *renderer);
 
 #endif // HOME_VIEW_H
