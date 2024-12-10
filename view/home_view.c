@@ -3,6 +3,9 @@
 #include <stdbool.h>
 #include "../model/auth.h"
 #include "../protocol.h"
+#include "../model/network.h"
+#include "../model/match.h"
+
 void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, int elo) {
     // Xóa màn hình với màu nền
     SDL_SetRenderDrawColor(renderer, 50, 50, 200, 255);
@@ -14,7 +17,7 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, i
 
     // Hiển thị tên người dùng
     char welcome_text[100];
-    snprintf(welcome_text, sizeof(welcome_text), "Welcome, %s!", username);
+    snprintf(welcome_text, sizeof(welcome_text), "Welcome, %s!", global_username);
     SDL_Surface *welcome_surface = TTF_RenderText_Solid(font, welcome_text, white);
     SDL_Texture *welcome_texture = SDL_CreateTextureFromSurface(renderer, welcome_surface);
     SDL_Rect welcome_rect = {540, 50, 200, 50}; 
@@ -70,7 +73,7 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, i
     SDL_RenderPresent(renderer);
 }
 
-void home_view(SDL_Renderer *renderer) {
+void home_view(SDL_Renderer *renderer, int sock) {
     
     TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
     if (!font) {
@@ -85,9 +88,8 @@ void home_view(SDL_Renderer *renderer) {
         // Vẽ giao diện trang chủ
         MYSQL *conn;
         conn = connect_database();
-        char username[50];
-        int elo = get_player_elo(get_player_id(username, conn), conn);
-        render_home(renderer, font, username, elo);
+        int elo = get_player_elo(get_player_id(global_username, conn), conn);
+        render_home(renderer, font, global_username, elo);
         mysql_close(conn);
         // Xử lý sự kiện
         while (SDL_PollEvent(&event)) {
@@ -100,8 +102,18 @@ void home_view(SDL_Renderer *renderer) {
                 int y = event.button.y;
 
                 if (x >= 440 && x <= 840 && y >= 150 && y <= 230) {
-                    printf("Find Match button clicked\n");
-                    // find_match_view(renderer);
+                    printf("Matching...\n");
+                    char register_request[512];
+                    snprintf(register_request, sizeof(register_request), "FIND_MATCH %s", global_username);
+                    send(sock, register_request, strlen(register_request), 0);
+                    printf("Sending to server: %s\n", register_request);
+                    char response [256];
+                    char o_username[256];
+                    int o_elo;
+                    memset(response, 0, sizeof(response));
+                    recv(sock, response, sizeof(response) - 1, 0);
+                    sscanf(response, "MATCH_FOUND %s %d", o_username, &o_elo);
+                    printf("Opponent is: %s %d\n", o_username, o_elo);
                 } else if (x >= 440 && x <= 840 && y >= 260 && y <= 340) {
                     printf("View History button clicked\n");
                     // history_view(renderer);

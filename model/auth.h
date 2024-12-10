@@ -10,5 +10,8 @@ bool register_account(const char *username, const char *password,MYSQL *conn);
 bool login_account(const char *username, const char *password, MYSQL *conn);
 bool username_exists(const char *username, MYSQL *conn);
 void hashPassword(const char *password, char *hashed_password);
+int get_player_id(char *username, MYSQL *conn);
+int get_player_elo(int id, MYSQL *conn);
+
 
 #endif 

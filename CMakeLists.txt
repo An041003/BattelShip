@@ -9,6 +9,7 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(COMMON_SOURCES
     model/auth.c
     model/network.c
+    model/match.c
     view/base_view.c
     view/login_view.c
     view/register_view.c

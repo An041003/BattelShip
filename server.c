@@ -8,6 +8,7 @@
 #include "model/auth.h"
 #include "controller/register.h"
 #include "controller/login.h"
+#include "model/match.h"
 
 // Hàm xử lý từng client trong một thread riêng
 void *client_handler(void *arg) {
@@ -38,7 +39,14 @@ void *client_handler(void *arg) {
             send(client_socket, "LOGIN.\n", 18, 0);
             handle_login(client_socket, conn);
         } else if (strncmp(buffer, FIND_MATCH, strlen(FIND_MATCH)) == 0) {
-            send(client_socket, "Matchmaking feature not implemented yet.\n", 42, 0);
+            char username[50];
+            sscanf(buffer, "FIND_MATCH %s", username);
+            int player_id = get_player_id(username, conn);
+            int elo = get_player_elo(player_id, conn);
+            Player player = { .id = player_id, .elo = elo };
+            strncpy(player.username, username, sizeof(player.username));
+            addPlayerToQueue(player);
+            handleMatchmaking(client_socket, player);
         } else {
             send(client_socket, "Invalid command.\n", 18, 0);
         }

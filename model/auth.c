@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <mysql/mysql.h>
 #include "../protocol.h"
+#include "network.h"
 
 MYSQL *connect_database() {
     MYSQL *conn = mysql_init(NULL);
@@ -104,7 +105,7 @@ bool login_account(const char *username, const char *password, MYSQL *conn)
     }
 
     if (mysql_num_rows(result) > 0) {
-        printf("Authentication successful!\n");
+        printf("%s login successful!\n", username);
         authSuccess = true;
     } else {
         printf("Authentication failed! Incorrect username or password.\n");

@@ -171,7 +171,6 @@ void login_view(SDL_Renderer *renderer, int sock) {
                         send(sock, login_request, strlen(login_request), 0);
                         printf("Sending to server: %s\n", login_request);
 
-                        
                         char response[256];
                         memset(response, 0, sizeof(response)); 
                         int bytes_received = recv(sock, response, sizeof(response) - 1, 0);
@@ -180,8 +179,9 @@ void login_view(SDL_Renderer *renderer, int sock) {
                             response[bytes_received] = '\0'; 
 
                         if (strcmp(response, "LOGIN") == 0) {
-                            printf("Login successful!\n");
-                            home_view(renderer);
+                            strcpy(global_username, username);
+                            printf("%s login successful!\n", global_username);
+                            home_view(renderer, sock);
                              login_running = false;
                          } else {
                                printf("Login failed: %s\n", response);
