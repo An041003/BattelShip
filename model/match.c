@@ -129,16 +129,3 @@ int create_match(MYSQL *conn, int playerId1, int playerId2){
 //     }
 //     fprintf(stderr, "Updated\n");
 // }
-
-//hàm này nhận vào id của người đang tìm, một mảng chứa id những người đang đợi, số lượng người trong queue
-//nếu ghép trận thành công sẽ tạo một trận trong db và trả về id của trận đấu đó, không thì trả về -1
-int find_match(MYSQL *conn, int userId, int *queue, int size) {
-    int elo = get_player_elo(userId, conn); 
-    for (int i = size - 1; i >= 0; i--) {  
-        int rivalElo = get_player_elo(queue[i], conn);
-        if (abs(elo - rivalElo) <= 100) {  
-            return create_match(conn, userId, queue[i]); 
-        }
-    }
-    return -1; 
-}

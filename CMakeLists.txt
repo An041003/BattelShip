@@ -10,24 +10,27 @@ set(COMMON_SOURCES
     model/auth.c
     model/network.c
     model/match.c
+    model/board.c 
     view/base_view.c
     view/login_view.c
     view/register_view.c
     view/menu_view.c
     view/home_view.c
+    view/placeship_view.c 
     controller/register.c
     controller/login.c
+    controller/ship_placement.c 
 )
 
 add_executable(Server
     server.c
     ${COMMON_SOURCES}
 )
-target_link_libraries(Server SDL2 SDL2_ttf ssl crypto mysqlclient)
+target_link_libraries(Server SDL2 SDL2_ttf SDL2_image ssl crypto mysqlclient)
 
 add_executable(Client
     client.c
     ${COMMON_SOURCES}
 )
-target_link_libraries(Client SDL2 SDL2_ttf ssl crypto mysqlclient)
+target_link_libraries(Client SDL2 SDL2_ttf SDL2_image ssl crypto mysqlclient)
 target_link_libraries(Server mysqlclient pthread)

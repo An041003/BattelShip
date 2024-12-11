@@ -1,6 +1,7 @@
 #include "base_view.h"
 #include <stdio.h>
 #include <stdbool.h>
+#include "../model/board.h"
 
 // Hàm để khởi tạo SDL và TTF
 bool init_sdl(const char *window_title, int width, int height, SDL_Window **window, SDL_Renderer **renderer)
@@ -88,4 +89,124 @@ void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color
 
     SDL_FreeSurface(text_surface);
     SDL_DestroyTexture(text_texture);
+}
+
+void draw_grid(SDL_Renderer *renderer, TTF_Font *font) {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Màu xanh dương cho lưới
+
+    for (int i = 0; i <= GRID_SIZE; i++) {
+        // Đường ngang
+        SDL_RenderDrawLine(renderer, PADDING, PADDING + i * CELL_SIZE, PADDING + GRID_SIZE * CELL_SIZE, PADDING + i * CELL_SIZE);
+        // Đường dọc
+        SDL_RenderDrawLine(renderer, PADDING + i * CELL_SIZE, PADDING, PADDING + i * CELL_SIZE, PADDING + GRID_SIZE * CELL_SIZE);
+    }
+
+    // Vẽ ký hiệu cột (1-10) và hàng (A-J)
+    SDL_Color white = {255, 255, 255, 255};
+    for (int i = 0; i < GRID_SIZE; i++) {
+        char label[2];
+        snprintf(label, sizeof(label), "%d", i + 1);
+
+        SDL_Surface *surface = TTF_RenderText_Solid(font, label, white);
+        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+        SDL_Rect dest = {PADDING + i * CELL_SIZE + CELL_SIZE / 2 - surface->w / 2, PADDING - 30, surface->w, surface->h};
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
+
+        snprintf(label, sizeof(label), "%c", 'A' + i);
+
+        surface = TTF_RenderText_Solid(font, label, white);
+        texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+        dest = (SDL_Rect){PADDING - 40, PADDING + i * CELL_SIZE + CELL_SIZE / 2 - surface->h / 2, surface->w, surface->h};
+        SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+        SDL_FreeSurface(surface);
+        SDL_DestroyTexture(texture);
+    }
+}
+
+void draw_ship(SDL_Renderer *renderer, SDL_Texture *ship_texture, Ship ship) {
+    SDL_Rect dest;
+
+    for (int i = 0; i < ship.length; i++) {
+        if (ship.direction == 'H') {
+            dest.x = PADDING + (ship.x + i) * CELL_SIZE;
+            dest.y = PADDING + ship.y * CELL_SIZE;
+        } else {
+            dest.x = PADDING + ship.x * CELL_SIZE;
+            dest.y = PADDING + (ship.y + i) * CELL_SIZE;
+        }
+        dest.w = CELL_SIZE;
+        dest.h = CELL_SIZE;
+
+        SDL_RenderCopy(renderer, ship_texture, NULL, &dest);
+    }
+}
+
+
+
+void draw_instructions(SDL_Renderer *renderer, TTF_Font *font, char current_direction, int current_length) {
+
+    SDL_Color white = {255, 255, 255, 255};
+
+
+
+    // Hướng dẫn
+
+    SDL_Surface *surface = TTF_RenderText_Solid(font, "Press H for Horizontal, V for Vertical", white);
+
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    SDL_Rect dest = {PADDING, PADDING + GRID_SIZE * CELL_SIZE + 20, surface->w, surface->h};
+
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+    SDL_FreeSurface(surface);
+
+    SDL_DestroyTexture(texture);
+
+
+
+    // Trạng thái đặt tàu
+
+    char direction_text[50];
+
+    snprintf(direction_text, sizeof(direction_text), "Direction: %s", current_direction == 'H' ? "Horizontal" : "Vertical");
+
+    surface = TTF_RenderText_Solid(font, direction_text, white);
+
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    dest = (SDL_Rect){PADDING, PADDING + GRID_SIZE * CELL_SIZE + 50, surface->w, surface->h};
+
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+    SDL_FreeSurface(surface);
+
+    SDL_DestroyTexture(texture);
+
+
+
+    // Thông tin độ dài tàu
+
+    char length_text[50];
+
+    snprintf(length_text, sizeof(length_text), "Current Ship Length: %d", current_length);
+
+    surface = TTF_RenderText_Solid(font, length_text, white);
+
+    texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+    dest = (SDL_Rect){PADDING, PADDING + GRID_SIZE * CELL_SIZE + 80, surface->w, surface->h};
+
+    SDL_RenderCopy(renderer, texture, NULL, &dest);
+
+    SDL_FreeSurface(surface);
+
+    SDL_DestroyTexture(texture);
+
 }

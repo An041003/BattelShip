@@ -48,7 +48,7 @@ void *client_handler(void *arg) {
             addPlayerToQueue(player);
             handleMatchmaking(client_socket, player);
         } else {
-            send(client_socket, "Invalid command.\n", 18, 0);
+            printf("Invalid message.\n");
         }
     }
 

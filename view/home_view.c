@@ -5,10 +5,11 @@
 #include "../protocol.h"
 #include "../model/network.h"
 #include "../model/match.h"
+#include "placeship_view.h"
 
 void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, int elo) {
     // Xóa màn hình với màu nền
-    SDL_SetRenderDrawColor(renderer, 50, 50, 200, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
     // Định nghĩa màu sắc
@@ -103,10 +104,10 @@ void home_view(SDL_Renderer *renderer, int sock) {
 
                 if (x >= 440 && x <= 840 && y >= 150 && y <= 230) {
                     printf("Matching...\n");
-                    char register_request[512];
-                    snprintf(register_request, sizeof(register_request), "FIND_MATCH %s", global_username);
-                    send(sock, register_request, strlen(register_request), 0);
-                    printf("Sending to server: %s\n", register_request);
+                    char request[512];
+                    snprintf(request, sizeof(request), "FIND_MATCH %s", global_username);
+                    send(sock, request, strlen(request), 0);
+                    printf("Sending to server: %s\n", request);
                     char response [256];
                     char o_username[256];
                     int o_elo;
@@ -114,6 +115,7 @@ void home_view(SDL_Renderer *renderer, int sock) {
                     recv(sock, response, sizeof(response) - 1, 0);
                     sscanf(response, "MATCH_FOUND %s %d", o_username, &o_elo);
                     printf("Opponent is: %s %d\n", o_username, o_elo);
+                    run_place_ship_screen(renderer, sock);
                 } else if (x >= 440 && x <= 840 && y >= 260 && y <= 340) {
                     printf("View History button clicked\n");
                     // history_view(renderer);
