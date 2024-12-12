@@ -120,6 +120,16 @@ int create_match(MYSQL *conn, int playerId1, int playerId2){
     return matchId;
 }
 
+void update_match_outcome(MYSQL *conn, int matchId, char *winner){
+    char query[256];
+    snprintf(query, sizeof(query), "UPDATE matches SET Winner = %s WHERE id = %d",winner, matchId );
+     if (mysql_query(conn, query)) {
+        fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
+        return -1;
+    }
+    fprintf(stderr, "update winner successfull!\n")
+}
+
 //sau khi trận đấu kết thúc hàm này cập nhập kết quả trận đấu vào database
 // void update_match_elo(MYSQL *conn, int matchId, int  playerGrade1, int playerGrade2){
 //     char query[256];
