@@ -18,4 +18,6 @@ void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color
 void draw_grid(SDL_Renderer *renderer, TTF_Font *font);
 void draw_ship(SDL_Renderer *renderer, SDL_Texture *ship_texture, Ship ship);
 void draw_instructions(SDL_Renderer *renderer, TTF_Font *font, char current_direction, int current_length);
+// Hàm vẽ dấu "X"
+void draw_X(SDL_Renderer *renderer, int x, int y, int cellSize, bool isHit);
 #endif

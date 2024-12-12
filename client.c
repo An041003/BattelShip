@@ -30,6 +30,8 @@ int main()
     }
 
     bool running = true; // Vòng lặp chính
+            printf("Testing X marks on the board.\n");
+            run_battleship_game(renderer, sock);
     while (running)
     {
         // Hiển thị menu
@@ -43,6 +45,9 @@ int main()
             break;
         case 2: // Đăng nhập
             login_view(renderer, sock);
+            break;
+        case 3: // Kiểm tra giao diện đặt tàu
+             // Gọi hàm từ temp.c
             break;
         case -1: // Thoát
             running = false;

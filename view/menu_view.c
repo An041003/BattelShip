@@ -6,7 +6,7 @@
 // Hàm để hiển thị menu và xử lý sự kiện
 int render_menu_view(SDL_Renderer *renderer)
 {
-    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf",24);
+    TTF_Font *font = TTF_OpenFont("/home/hoangmanhkien/Lập Trình Mạng/BattelShip/arial.ttf",24);
     if(!font){
         printf("Unload font %s\n", TTF_GetError());
         return;
@@ -61,3 +61,11 @@ int render_menu_view(SDL_Renderer *renderer)
     }
     return choice;
 }
+void on_fire_button_click(SDL_Renderer *renderer, int x, int y, int board[10][10], int sock) {
+    send_fire(x, y, sock); // Gửi tọa độ bắn đến server
+
+    // Render lại bảng chơi
+    render_game_board(renderer, board, 50); // cellSize = 50
+    SDL_RenderPresent(renderer);
+}
+

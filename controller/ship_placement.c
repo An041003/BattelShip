@@ -27,3 +27,17 @@ void handle_ship_placement(int board[GRID_SIZE][GRID_SIZE], Ship *ships, int *cu
         }
     }
 }
+void handle_fire_result(char *message, int board[10][10]) {
+    int x, y;
+    char result[10];
+
+    // Phân tích kết quả từ server
+    sscanf(message, "FIRE_RESULT|%d|%d|%s", &x, &y, result);
+
+    if (strcmp(result, "HIT") == 0) {
+        board[y][x] = 2; // 2 = trúng
+    } else if (strcmp(result, "MISS") == 0) {
+        board[y][x] = 1; // 1 = trượt
+    }
+}
+

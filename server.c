@@ -47,7 +47,8 @@ void *client_handler(void *arg) {
             strncpy(player.username, username, sizeof(player.username));
             addPlayerToQueue(player);
             handleMatchmaking(client_socket, player);
-        } else {
+        }
+         else {
             printf("Invalid message.\n");
         }
     }

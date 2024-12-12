@@ -3,14 +3,16 @@
 #include <SDL2/SDL_ttf.h>
 #include "../controller/ship_placement.h"
 #include "base_view.h"
+#include "fire_result_view.h"
+
 
 void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
     // Khởi tạo SDL
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
-    SDL_Texture *ship_texture = IMG_LoadTexture(renderer, "/home/an/Documents/GitHub/BattelShip/ship.webp");
+    TTF_Font *font = TTF_OpenFont("/home/hoangmanhkien/Lập Trình Mạng/BattelShip/arial.ttf", 24);
+    SDL_Texture *ship_texture = IMG_LoadTexture(renderer, "/home/hoangmanhkien/Lập Trình Mạng/BattelShip/ship.webp");
 
     // Kiểm tra nếu font hoặc texture không được tải
     if (!font || !ship_texture) {
@@ -94,4 +96,20 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
     // Giải phóng tài nguyên
     SDL_DestroyTexture(ship_texture);
     TTF_CloseFont(font);
+}
+// Ví dụ sử dụng trong hàm render bảng
+void render_game_board(SDL_Renderer *renderer, int board[10][10], int cellSize) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            int x = j * cellSize;
+            int y = i * cellSize;
+
+            // Vẽ dấu "X" nếu vị trí đã được bắn
+            if (board[i][j] == 1) { // 1 = trượt
+                draw_X(renderer, x, y, cellSize, false);
+            } else if (board[i][j] == 2) { // 2 = trúng
+                draw_X(renderer, x, y, cellSize, true);
+            }
+        }
+    }
 }

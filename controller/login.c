@@ -28,3 +28,9 @@ void handle_login(int client_socket, MYSQL *conn) {
         send(client_socket, "Username or Password incorrected.\n", 32, 0);
     }
 }
+void send_fire(int x, int y, int sock) {
+    char fire_message[50];
+    snprintf(fire_message, sizeof(fire_message), "FIRE|%d|%d", x, y);
+    send(sock, fire_message, strlen(fire_message), 0);
+}
+

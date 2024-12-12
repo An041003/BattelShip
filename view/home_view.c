@@ -76,7 +76,7 @@ void render_home(SDL_Renderer *renderer, TTF_Font *font, const char *username, i
 
 void home_view(SDL_Renderer *renderer, int sock) {
     
-    TTF_Font *font = TTF_OpenFont("/home/an/Documents/GitHub/BattelShip/arial.ttf", 24);
+    TTF_Font *font = TTF_OpenFont("/home/hoangmanhkien/Lập Trình Mạng/BattelShip/arial.ttf", 24);
     if (!font) {
         printf("Failed to load font: %s\n", TTF_GetError());
         return;

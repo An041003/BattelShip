@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "../model/board.h"
+#include <SDL2/SDL.h>
+
 
 // Hàm để khởi tạo SDL và TTF
 bool init_sdl(const char *window_title, int width, int height, SDL_Window **window, SDL_Renderer **renderer)
@@ -64,6 +66,22 @@ void draw_button(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, const c
 
     // Hiển thị text
     draw_text(renderer, text, rect.x + 10, rect.y + 10, (SDL_Color){255, 255, 255, 255}, font); // Màu trắng cho text
+}
+
+// Hàm vẽ dấu "X" tại tọa độ (x, y) trên bảng chơi
+void draw_X(SDL_Renderer *renderer, int x, int y, int cellSize, bool isHit) {
+    // Chọn màu
+    if (isHit) {
+        SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255); // Màu xanh (trúng)
+    } else {
+        SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Màu đỏ (trượt)
+    }
+
+    // Vẽ đường chéo từ góc trên trái đến góc dưới phải
+    SDL_RenderDrawLine(renderer, x, y, x + cellSize, y + cellSize);
+
+    // Vẽ đường chéo từ góc trên phải đến góc dưới trái
+    SDL_RenderDrawLine(renderer, x + cellSize, y, x, y + cellSize);
 }
 
 // Hàm để hiển thị text

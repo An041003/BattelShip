@@ -1,0 +1,4 @@
+/home/hoangmanhkien/Lập Trình Mạng/BattelShip/build/CMakeFiles/Server.dir
+/home/hoangmanhkien/Lập Trình Mạng/BattelShip/build/CMakeFiles/Client.dir
+/home/hoangmanhkien/Lập Trình Mạng/BattelShip/build/CMakeFiles/edit_cache.dir
+/home/hoangmanhkien/Lập Trình Mạng/BattelShip/build/CMakeFiles/rebuild_cache.dir
