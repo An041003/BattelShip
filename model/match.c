@@ -7,6 +7,7 @@
 #include "auth.h"
 #include "match.h"
 #include <pthread.h>
+#include "board.h"
 
 #define MAX_PLAYERS 10
 Player waitingList[MAX_PLAYERS];
@@ -127,15 +128,104 @@ void update_match_outcome(MYSQL *conn, int matchId, char *winner){
         fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
         return -1;
     }
-    fprintf(stderr, "update winner successfull!\n")
+    fprintf(stderr, "update winner successfull!\n");
 }
 
-//sau khi trận đấu kết thúc hàm này cập nhập kết quả trận đấu vào database
-// void update_match_elo(MYSQL *conn, int matchId, int  playerGrade1, int playerGrade2){
-//     char query[256];
-//     snprintf(query, sizeof(query), "UPDATE matches SET playerGrade1 = %d , playerGrade2 = %d WHERE id = %d",playerId1, playerId2, matchId );
-//     if (mysql_query(conn, query)) {
-//         fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
-//     }
-//     fprintf(stderr, "Updated\n");
-// }
+void match_control(Player player1, Player player2){
+    int board1[GRID_SIZE][GRID_SIZE];
+    int board2[GRID_SIZE][GRID_SIZE];
+    char buffer[BUFFER_SIZE];
+    Ship ship1, ship2;
+    recv(player1.sock, buffer[1], BUFFER_SIZE, 0); 
+    memcpy(board1,&buffer[1],  sizeof(board1)); 
+    recv(player2.sock, buffer[2],BUFFER_SIZE, 0 );
+    memcpy(board2,&buffer[2],  sizeof(board2)); 
+
+    int current_player = 1;
+   
+    while(1){
+    int opponent = (current_player == 1) ? player2.sock: player1.sock;
+    int current_client = (current_player == 1) ? player1.sock: player2.sock;
+    int (*opponent_board)[GRID_SIZE]; 
+    opponent_board = (current_player == 1) ? board2 : board1;
+    Ship opponent_ship =  (current_player == 1) ? ship2 : ship1;
+    
+    notify_turn(current_client, opponent );
+    recv(current_client, buffer, BUFFER_SIZE, 0); 
+        int row = buffer[1];
+        int col = buffer[2];
+    if(is_valid_move(row, col, opponent_board)) {
+        int result = fire_result(row, col,opponent_board, opponent_ship);
+        switch (result)
+        {
+        case 1: //  bắn trúng 1 ô tàu
+            send(current_client,"HIT\n", BUFFER_SIZE, 0);
+            send(opponent,"HIT\n", BUFFER_SIZE, 0);
+            update_game_state(opponent, opponent_board);
+            current_player = (current_player == 1) ? 2 : 1;
+            break;
+        case 2: // bắn chìm tàu rồi
+        // báo cho ng chơi là họ thắng
+            send(current_client,"WIN\n", BUFFER_SIZE, 0);
+        //báo cho đối thủ là bị chìm tàu
+            send(opponent,"SUNK\n", BUFFER_SIZE, 0);
+            break;
+        case 3: // bắn ko trúng
+            send(current_client,"MISS\n", BUFFER_SIZE, 0);
+            send(opponent,"MISS\n", BUFFER_SIZE, 0);
+             update_game_state(opponent, opponent_board);
+            current_player = (current_player == 1) ? 2 : 1;
+            break;
+        default:
+            break;
+        }
+        
+       
+    }
+    notify_turn(current_client, opponent );
+    
+    }
+
+}
+int is_valid_move(int row, int col, int board[GRID_SIZE][GRID_SIZE]) {
+    return (row >= 0 && row < GRID_SIZE && col >= 0 && col < GRID_SIZE );
+}
+// hàm này gửi lại trạng thái ô cờ
+void update_game_state(int client_socket,  int board[GRID_SIZE][GRID_SIZE]) {
+    char buffer[BUFFER_SIZE] = {0x03};
+    send(client_socket,"UPDATE\n", BUFFER_SIZE, 0);
+    memcpy(&buffer[1], board, GRID_SIZE); 
+    send(client_socket, buffer, BUFFER_SIZE, 0);
+    memset(buffer, 0, BUFFER_SIZE);
+}
+void notify_turn(int client1_socket,int client2_socket) { 
+    send(client1_socket,"YOUR_TURN\n", BUFFER_SIZE, 0);
+    send(client1_socket,"OPPONENT_TURN\n", BUFFER_SIZE, 0);
+}
+
+
+//kiểm tra vị trí đặt có vào thuyền không
+int fire_result( int row, int col, int board[GRID_SIZE][GRID_SIZE], Ship ship ){
+    int hit = 1, sunk = 2, miss = 3;
+    if(board[row][col] == 1){
+        board[row][col] = 0;
+        if(&ship.direction == "H"){
+            for(int i = ship.x; i < ship.x + ship.length; i++){
+                if(board[i][ship.y] == 1) {
+                    return  hit ;
+                }
+            }
+            return sunk ;
+        }
+        if(&ship.direction == "V"){
+            for(int j = ship.y; j < ship.y + ship.length; j++){
+                if(board[ship.x][j] == 1){
+                    return hit;
+                }
+            }
+            return sunk ;
+        }
+    }
+     return miss;
+}
+

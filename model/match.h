@@ -7,6 +7,7 @@ typedef struct {
     int id;
     int elo;
     bool isWaiting;
+    int sock;
 } Player;
 
 

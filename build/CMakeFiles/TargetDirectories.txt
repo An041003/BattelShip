@@ -1,0 +1,4 @@
+/home/phuong/code/LTM/final_project/battleShip/BattelShip/build/CMakeFiles/Server.dir
+/home/phuong/code/LTM/final_project/battleShip/BattelShip/build/CMakeFiles/Client.dir
+/home/phuong/code/LTM/final_project/battleShip/BattelShip/build/CMakeFiles/edit_cache.dir
+/home/phuong/code/LTM/final_project/battleShip/BattelShip/build/CMakeFiles/rebuild_cache.dir

@@ -50,6 +50,9 @@
 #define YOUR_TURN "YOUR_TURN"
 #define OPPONENT_TURN "OPPONENT_TURN"
 
+//update trạng thái sau mỗi lượt bắn
+#define UPDATE "UPDATE"
+
 // Tạm dừng/Thua/Hòa
 #define PAUSE "PAUSE"
 #define PAUSE_SUCCESS "PAUSE_SUCCESS"

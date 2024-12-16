@@ -57,7 +57,6 @@ void *client_handler(void *arg) {
     return NULL;
 }
 
-
 int main() {
     int server_fd;
     struct sockaddr_in address;
