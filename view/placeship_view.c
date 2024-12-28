@@ -3,6 +3,8 @@
 #include <SDL2/SDL_ttf.h>
 #include "../controller/ship_placement.h"
 #include "base_view.h"
+#include "../model/network.h"
+#include "play_view.h"
 
 void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
     // Khởi tạo SDL
@@ -28,9 +30,10 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
     char current_direction = 'H';
 
     // Vị trí và màu sắc nút "Ready"
-    SDL_Rect ready_button = {1280 - 600, 720 - 80, 120, 50};
+    SDL_Rect ready_button = {1600 - 1000, 900 - 100, 120, 50};
     SDL_Color button_color = {0, 128, 0, 255}; // Màu xanh lá cây
     bool placing_ships = true;
+
 
     // Vòng lặp chính để đặt tàu
     while (placing_ships) {
@@ -56,11 +59,9 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
                 if (current_ship == 4 &&
                     e.button.x >= ready_button.x && e.button.x <= ready_button.x + ready_button.w &&
                     e.button.y >= ready_button.y && e.button.y <= ready_button.y + ready_button.h) {
-                    char request[512];
-                    snprintf(request, sizeof(request), "READY");
-                    send(sock, request, strlen(request), 0);
-                    printf("Sending to server: %s\n", request);
-                    placing_ships = false; // Thoát vòng lặp
+                    send_ship_positions(sock, board);
+                    run_play_screen(renderer, sock);
+                    placing_ships = false;
                 }
             } else if (e.type == SDL_KEYDOWN) {
                 if (e.key.keysym.sym == SDLK_h) {
@@ -74,8 +75,10 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
         // Vẽ giao diện
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
-
-        draw_grid(renderer, font);
+        int player_grid_x = PADDING;
+        int player_grid_y = PADDING;
+        draw_text(renderer, "Your Board", player_grid_x, player_grid_y - 50, (SDL_Color){255, 255, 255, 255}, font);
+        draw_grid(renderer, font, player_grid_x, player_grid_y);
 
         for (int i = 0; i < current_ship; i++) {
             draw_ship(renderer, ship_texture, ships[i]);

@@ -91,43 +91,31 @@ void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color
     SDL_DestroyTexture(text_texture);
 }
 
-void draw_grid(SDL_Renderer *renderer, TTF_Font *font) {
+void draw_grid(SDL_Renderer *renderer, TTF_Font *font, int offset_x, int offset_y) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255); // Màu xanh dương cho lưới
 
     for (int i = 0; i <= GRID_SIZE; i++) {
         // Đường ngang
-        SDL_RenderDrawLine(renderer, PADDING, PADDING + i * CELL_SIZE, PADDING + GRID_SIZE * CELL_SIZE, PADDING + i * CELL_SIZE);
+        SDL_RenderDrawLine(renderer, offset_x, offset_y + i * CELL_SIZE, offset_x + GRID_SIZE * CELL_SIZE, offset_y + i * CELL_SIZE);
         // Đường dọc
-        SDL_RenderDrawLine(renderer, PADDING + i * CELL_SIZE, PADDING, PADDING + i * CELL_SIZE, PADDING + GRID_SIZE * CELL_SIZE);
+        SDL_RenderDrawLine(renderer, offset_x + i * CELL_SIZE, offset_y, offset_x + i * CELL_SIZE, offset_y + GRID_SIZE * CELL_SIZE);
     }
 
     // Vẽ ký hiệu cột (1-10) và hàng (A-J)
     SDL_Color white = {255, 255, 255, 255};
     for (int i = 0; i < GRID_SIZE; i++) {
         char label[2];
+
+        // Số cột (1-10)
         snprintf(label, sizeof(label), "%d", i + 1);
+        draw_text(renderer, label, offset_x + i * CELL_SIZE + CELL_SIZE / 2 - 10, offset_y - 30, white, font);
 
-        SDL_Surface *surface = TTF_RenderText_Solid(font, label, white);
-        SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-        SDL_Rect dest = {PADDING + i * CELL_SIZE + CELL_SIZE / 2 - surface->w / 2, PADDING - 30, surface->w, surface->h};
-        SDL_RenderCopy(renderer, texture, NULL, &dest);
-
-        SDL_FreeSurface(surface);
-        SDL_DestroyTexture(texture);
-
+        // Ký tự hàng (A-J)
         snprintf(label, sizeof(label), "%c", 'A' + i);
-
-        surface = TTF_RenderText_Solid(font, label, white);
-        texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-        dest = (SDL_Rect){PADDING - 40, PADDING + i * CELL_SIZE + CELL_SIZE / 2 - surface->h / 2, surface->w, surface->h};
-        SDL_RenderCopy(renderer, texture, NULL, &dest);
-
-        SDL_FreeSurface(surface);
-        SDL_DestroyTexture(texture);
+        draw_text(renderer, label, offset_x - 30, offset_y + i * CELL_SIZE + CELL_SIZE / 2 - 10, white, font);
     }
 }
+
 
 void draw_ship(SDL_Renderer *renderer, SDL_Texture *ship_texture, Ship ship) {
     SDL_Rect dest;

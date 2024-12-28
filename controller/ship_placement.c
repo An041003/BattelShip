@@ -1,5 +1,8 @@
 #include "ship_placement.h"
 #include <SDL2/SDL.h>
+#include "../protocol.h"
+#include "../model/network.h"
+#include "../model/auth.h"
 
 void handle_ship_placement(int board[GRID_SIZE][GRID_SIZE], Ship *ships, int *current_ship, int ship_sizes[], char *current_direction) {
     SDL_Event e;
@@ -25,5 +28,26 @@ void handle_ship_placement(int board[GRID_SIZE][GRID_SIZE], Ship *ships, int *cu
                 *current_direction = 'V';
             }
         }
+    }
+}
+
+void send_ship_positions(int sock, int board[GRID_SIZE][GRID_SIZE]) {
+    char buffer[BUFFER_SIZE] = {0};
+    strcpy(buffer, "PLACE_SHIP");
+    memcpy(&buffer[strlen("PLACE_SHIP")], board, GRID_SIZE * GRID_SIZE * sizeof(int));
+    if (send(sock, buffer, sizeof(buffer), 0) == -1) {
+        perror("Failed to send ship positions");
+    } else {
+        printf("Ship positions sent to server successfully.\n");
+    }
+    memset(buffer, 0, sizeof(buffer));
+    if (recv(sock, buffer, sizeof(buffer), 0) > 0) {
+        if (strncmp(buffer, "PLACE_SUCCESS", strlen("PLACE_SUCCESS")) == 0) {
+            printf("Match has started! Get ready to play.\n");
+        } else {
+            printf("Unexpected server response: %s\n", buffer);
+        }
+    } else {
+        perror("Failed to receive acknowledgment from server");
     }
 }

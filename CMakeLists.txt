@@ -16,6 +16,7 @@ set(COMMON_SOURCES
     view/register_view.c
     view/menu_view.c
     view/home_view.c
+    view/play_view.c
     view/placeship_view.c 
     controller/register.c
     controller/login.c

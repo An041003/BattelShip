@@ -1,5 +1,4 @@
 #include "board.h"
-
 void init_board(int board[GRID_SIZE][GRID_SIZE]) {
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
@@ -27,3 +26,4 @@ void place_ship(int board[GRID_SIZE][GRID_SIZE], Ship ship) {
         board[y][x] = 1;
     }
 }
+

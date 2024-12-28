@@ -3,7 +3,7 @@
 
 #include <stdbool.h> 
 
-#define PORT 8000
+#define PORT 8001
 #define BUFFER_SIZE 1024
 
 #define DB_HOST "battle-ship-phuongxxx971022-4df8.c.aivencloud.com"
@@ -19,6 +19,7 @@
 #define LOGIN "LOGIN"
 #define LOGIN_SUCCESS "LOGIN_SUCCESS"
 #define LOGIN_FAIL "LOGIN_FAIL"
+
 
 // Ghép trận
 #define FIND_MATCH "FIND_MATCH"

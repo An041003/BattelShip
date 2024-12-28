@@ -5,7 +5,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdbool.h>
 #include "../model/board.h"
-#define PADDING 50
+#define PADDING 80
 #define CELL_SIZE 60
 
 // Hàm để khởi tạo SDL và TTF
@@ -15,7 +15,7 @@ bool cleanup_view(SDL_Window **window, SDL_Renderer **renderer);
 void draw_button(SDL_Renderer *renderer, SDL_Rect rect, SDL_Color color, const char *text, TTF_Font *font);
 // Hàm để hiển thị text
 void draw_text(SDL_Renderer *renderer, const char *text, int x, int y, SDL_Color color, TTF_Font *font);
-void draw_grid(SDL_Renderer *renderer, TTF_Font *font);
+void draw_grid(SDL_Renderer *renderer, TTF_Font *font, int offset_x, int offset_y);
 void draw_ship(SDL_Renderer *renderer, SDL_Texture *ship_texture, Ship ship);
 void draw_instructions(SDL_Renderer *renderer, TTF_Font *font, char current_direction, int current_length);
 #endif

@@ -6,6 +6,8 @@
 #include <mysql/mysql.h>
 #include "../protocol.h"
 #include "network.h"
+#include "match.h"
+
 
 MYSQL *connect_database() {
     MYSQL *conn = mysql_init(NULL);
@@ -115,6 +117,34 @@ bool login_account(const char *username, const char *password, MYSQL *conn)
     return authSuccess; 
 
 }
+
+void addPlayerSocket(int playerId, int socket) {
+    for (int i = 0; i < playerSocketCount; i++) {
+        if (playerSockets[i].playerId == playerId) {
+            playerSockets[i].socket = socket; // Cập nhật socket nếu đã tồn tại
+            return;
+        }
+    }
+
+    if (playerSocketCount < MAX_PLAYERS) {
+        playerSockets[playerSocketCount].playerId = playerId;
+        playerSockets[playerSocketCount].socket = socket;
+        playerSocketCount++;
+    } else {
+        printf("Player socket storage is full.\n");
+    }
+}
+
+int getPlayerSocket(int playerId) {
+    for (int i = 0; i < playerSocketCount; i++) {
+        if (playerSockets[i].playerId == playerId) {
+            return playerSockets[i].socket;
+        }
+    }
+    return -1; // Không tìm thấy
+}
+
+
 int get_player_id(char *username, MYSQL *conn){
     int id;
     char query[256];

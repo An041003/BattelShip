@@ -12,6 +12,7 @@ bool username_exists(const char *username, MYSQL *conn);
 void hashPassword(const char *password, char *hashed_password);
 int get_player_id(char *username, MYSQL *conn);
 int get_player_elo(int id, MYSQL *conn);
-
+int getPlayerSocket(int playerId);
+void addPlayerSocket(int playerId, int socket);
 
 #endif 

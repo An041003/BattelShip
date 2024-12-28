@@ -6,13 +6,16 @@
 #include <pthread.h>
 #include "protocol.h"
 #include "model/auth.h"
+#include "model/board.h"
 #include "controller/register.h"
 #include "controller/login.h"
 #include "model/match.h"
+#include "view/play_view.h"
 
 // Hàm xử lý từng client trong một thread riêng
 void *client_handler(void *arg) {
     int client_socket = *(int *)arg;
+    int board[GRID_SIZE][GRID_SIZE];
     free(arg);
     MYSQL *conn = connect_database();
 
@@ -45,9 +48,71 @@ void *client_handler(void *arg) {
             int elo = get_player_elo(player_id, conn);
             Player player = { .id = player_id, .elo = elo };
             strncpy(player.username, username, sizeof(player.username));
+            addPlayerSocket(player_id, client_socket);
             addPlayerToQueue(player);
             handleMatchmaking(client_socket, player);
+        // } else if (strncmp(buffer, READY, strlen(READY)) == 0) {
+        //     char username[50];
+        //     sscanf(buffer, "READY %s", username);
+        //     printf("%s ready!\n", username);
+        //     int playerId= get_player_id(username, conn);
+        //     for (int i = 0; i < match_count; i++) {
+        //     if (matches[i].player1_socket == getPlayerSocket(playerId)) {
+        //         matches[i].player1_ready = 1;
+
+        //         if (matches[i].player2_ready == 1) {
+        //             send(matches[i].player1_socket, "START_GAME\n", strlen("START_GAME\n"), 0);
+        //             send(matches[i].player2_socket, "START_GAME\n", strlen("START_GAME\n"), 0);
+        //             printf("Match %d started!\n", i);
+                    
+        //         }
+        //         break;
+
+        //     } else if (matches[i].player2_socket == getPlayerSocket(playerId)) {
+        //         matches[i].player2_ready = 1;
+
+        //         if (matches[i].player1_ready == 1) {
+        //             send(matches[i].player1_socket, "START_GAME\n", strlen("START_GAME\n"), 0);
+        //             send(matches[i].player2_socket, "START_GAME\n", strlen("START_GAME\n"), 0);
+        //             printf("Match %d started!\n", i);
+        //         }
+        //         break;
+        //     }
+        //     }       
+        } else if (strncmp(buffer, PLACE_SHIP, strlen(PLACE_SHIP)) == 0) {
+            
+            for (int i = 0; i < match_count; i++) {
+        if (matches[i].player1_socket == client_socket) {
+            // Cập nhật board của player1
+            memcpy(matches[i].board1, &buffer[strlen(PLACE_SHIP)], GRID_SIZE * GRID_SIZE * sizeof(int));
+            matches[i].player1_ready = 1;
+            printf("Player 1 board updated for match %d\n", i);
+
+        } else if (matches[i].player2_socket == client_socket) {
+            // Cập nhật board của player2
+            memcpy(matches[i].board2, &buffer[strlen(PLACE_SHIP)], GRID_SIZE * GRID_SIZE * sizeof(int));
+            matches[i].player2_ready = 1;
+            printf("Player 2 board updated for match %d\n", i);
+        }
+
+        // Nếu cả hai người chơi đã gửi board
+        if (matches[i].player1_ready == 1 && matches[i].player2_ready == 1) {
+            send(matches[i].player1_socket, "PLACE_SUCCESS\n", strlen("PLACE_SUCCESS\n"), 0);
+            send(matches[i].player2_socket, "PLACE_SUCCESS\n", strlen("PLACE_SUCCESS\n"), 0);
+            printf("Both boards are ready for match %d\n", i);
+            Match temp_match;
+            memcpy(&temp_match, &matches[i], sizeof(Match));
+
+            match_control(temp_match);
+            // Reset 
+            matches[i].player1_ready = 0;
+            matches[i].player2_ready = 0;
+        }
+
+        break;
+    }
         } else {
+
             printf("Invalid message.\n");
         }
     }

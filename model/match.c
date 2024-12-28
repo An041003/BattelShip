@@ -9,9 +9,10 @@
 #include <pthread.h>
 #include "board.h"
 
-#define MAX_PLAYERS 10
 Player waitingList[MAX_PLAYERS];
 int waitingCount = 0;
+int playerSocketCount = 0;
+int match_count = 0;
 
 
 void addPlayerToQueue(Player player) {
@@ -117,7 +118,25 @@ int create_match(MYSQL *conn, int playerId1, int playerId2){
         fprintf(stderr, "Failed to retrieve match ID.\n");
         return -1;
     }
+    int player1_socket = getPlayerSocket(playerId1);
+    int player2_socket = getPlayerSocket(playerId2);
+    if (match_count >= MAX_MATCHES) {
+        printf("Match limit reached.\n");
+        return -1;
+    }
 
+    matches[match_count].player1_socket = player1_socket;
+    matches[match_count].player2_socket = player2_socket;
+    matches[match_count].player1_ready = 0;
+    matches[match_count].player2_ready = 0;
+    match_count = match_count +1 ;
+
+    if (player1_socket == -1 || player2_socket == -1) {
+        printf("Failed to retrieve sockets for players.\n");
+        return -1;
+    }
+
+    printf("Match created: %d vs %d\n", player1_socket, player2_socket);
     return matchId;
 }
 
@@ -131,36 +150,39 @@ void update_match_outcome(MYSQL *conn, int matchId, char *winner){
     fprintf(stderr, "update winner successfull!\n");
 }
 
-void match_control(Player player1, Player player2){
+
+
+void match_control(Match current_match){
+    printf("1");
     int board1[GRID_SIZE][GRID_SIZE];
     int board2[GRID_SIZE][GRID_SIZE];
+    memcpy(board1, current_match.board1, sizeof(board1));
+    memcpy(board2, current_match.board2, sizeof(board2));
     char buffer[BUFFER_SIZE];
     Ship ship1, ship2;
-    recv(player1.sock, buffer[1], BUFFER_SIZE, 0); 
-    memcpy(board1,&buffer[1],  sizeof(board1)); 
-    recv(player2.sock, buffer[2],BUFFER_SIZE, 0 );
-    memcpy(board2,&buffer[2],  sizeof(board2)); 
 
+    printf("2");
     int current_player = 1;
    
     while(1){
-    int opponent = (current_player == 1) ? player2.sock: player1.sock;
-    int current_client = (current_player == 1) ? player1.sock: player2.sock;
+    int opponent = (current_player == 1) ? current_match.player2_socket: current_match.player1_socket;
+    int current_client = (current_player == 1) ? current_match.player1_socket: current_match.player2_socket;
     int (*opponent_board)[GRID_SIZE]; 
     opponent_board = (current_player == 1) ? board2 : board1;
     Ship opponent_ship =  (current_player == 1) ? ship2 : ship1;
     
     notify_turn(current_client, opponent );
     recv(current_client, buffer, BUFFER_SIZE, 0); 
-        int row = buffer[1];
-        int col = buffer[2];
+    if (strncmp(buffer, "FIRE", strlen("FIRE")) == 0) {
+    int row, col;
+    sscanf(buffer, "FIRE %d,%d", &row, &col);
     if(is_valid_move(row, col, opponent_board)) {
         int result = fire_result(row, col,opponent_board, opponent_ship);
         switch (result)
         {
         case 1: //  bắn trúng 1 ô tàu
-            send(current_client,"HIT\n", BUFFER_SIZE, 0);
-            send(opponent,"HIT\n", BUFFER_SIZE, 0);
+            send(current_client,HIT, BUFFER_SIZE, 0);
+            send(opponent,HIT, BUFFER_SIZE, 0);
             update_game_state(opponent, opponent_board);
             current_player = (current_player == 1) ? 2 : 1;
             break;
@@ -173,7 +195,7 @@ void match_control(Player player1, Player player2){
         case 3: // bắn ko trúng
             send(current_client,"MISS\n", BUFFER_SIZE, 0);
             send(opponent,"MISS\n", BUFFER_SIZE, 0);
-             update_game_state(opponent, opponent_board);
+            update_game_state(opponent, opponent_board);
             current_player = (current_player == 1) ? 2 : 1;
             break;
         default:
@@ -184,7 +206,7 @@ void match_control(Player player1, Player player2){
     }
     notify_turn(current_client, opponent );
     
-    }
+    }}
 
 }
 int is_valid_move(int row, int col, int board[GRID_SIZE][GRID_SIZE]) {
@@ -200,7 +222,7 @@ void update_game_state(int client_socket,  int board[GRID_SIZE][GRID_SIZE]) {
 }
 void notify_turn(int client1_socket,int client2_socket) { 
     send(client1_socket,"YOUR_TURN\n", BUFFER_SIZE, 0);
-    send(client1_socket,"OPPONENT_TURN\n", BUFFER_SIZE, 0);
+    send(client2_socket,"OPPONENT_TURN\n", BUFFER_SIZE, 0);
 }
 
 
