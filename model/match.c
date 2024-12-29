@@ -2,6 +2,7 @@
 #include <string.h>
 #include <openssl/sha.h> 
 #include <stdlib.h>
+#include <unistd.h>
 #include <mysql/mysql.h>
 #include "../protocol.h"
 #include "auth.h"
@@ -151,38 +152,42 @@ void update_match_outcome(MYSQL *conn, int matchId, char *winner){
 }
 
 
+void match_control(int socket1, int socket2){
 
-void match_control(Match current_match){
-    printf("1");
     int board1[GRID_SIZE][GRID_SIZE];
     int board2[GRID_SIZE][GRID_SIZE];
-    memcpy(board1, current_match.board1, sizeof(board1));
-    memcpy(board2, current_match.board2, sizeof(board2));
+    memcpy(board1, temp_match.board1, sizeof(board1));
+    memcpy(board2, temp_match.board2, sizeof(board2));
     char buffer[BUFFER_SIZE];
     Ship ship1, ship2;
-
-    printf("2");
     int current_player = 1;
-   
+    send(temp_match.player1_socket,YOUR_TURN, strlen(YOUR_TURN), 0);
+    send(temp_match.player2_socket,OPPONENT_TURN, strlen(OPPONENT_TURN), 0);
+    char your[BUFFER_SIZE];
+    strcpy(your, "YOUR_TURN\n");
+    char op[BUFFER_SIZE];
+    strcpy(op, "OPPONENT_TURN\n");
     while(1){
-    int opponent = (current_player == 1) ? current_match.player2_socket: current_match.player1_socket;
-    int current_client = (current_player == 1) ? current_match.player1_socket: current_match.player2_socket;
+    int opponent = (current_player == 1) ? temp_match.player2_socket: temp_match.player1_socket;
+    int current_client = (current_player == 1) ? temp_match.player1_socket: temp_match.player2_socket;
     int (*opponent_board)[GRID_SIZE]; 
     opponent_board = (current_player == 1) ? board2 : board1;
     Ship opponent_ship =  (current_player == 1) ? ship2 : ship1;
+    printf("Now %d turn\n", current_client);
+    //notify_turn(current_client, opponent );
     
-    notify_turn(current_client, opponent );
-    recv(current_client, buffer, BUFFER_SIZE, 0); 
-    if (strncmp(buffer, "FIRE", strlen("FIRE")) == 0) {
+    recv(current_client, buffer, sizeof(buffer), 0); 
+
     int row, col;
-    sscanf(buffer, "FIRE %d,%d", &row, &col);
+    sscanf(buffer, "FIRE %d %d", &row, &col);
     if(is_valid_move(row, col, opponent_board)) {
         int result = fire_result(row, col,opponent_board, opponent_ship);
         switch (result)
         {
         case 1: //  bắn trúng 1 ô tàu
-            send(current_client,HIT, BUFFER_SIZE, 0);
-            send(opponent,HIT, BUFFER_SIZE, 0);
+            send(current_client,HIT, strlen(HIT), 0);
+            send(opponent,HIT, strlen(HIT), 0);
+            //printf("Sended\n");
             update_game_state(opponent, opponent_board);
             current_player = (current_player == 1) ? 2 : 1;
             break;
@@ -193,10 +198,16 @@ void match_control(Match current_match){
             send(opponent,"SUNK\n", BUFFER_SIZE, 0);
             break;
         case 3: // bắn ko trúng
-            send(current_client,"MISS\n", BUFFER_SIZE, 0);
-            send(opponent,"MISS\n", BUFFER_SIZE, 0);
+        
+            send(current_client, MISS, strlen(MISS), 0);
+            usleep(1000000);
+            send(current_client, op, strlen(op), 0);
+            send(opponent, MISS, strlen(MISS), 0);
+            usleep(1000000);
+            send(opponent, your, strlen(your), 0);
             update_game_state(opponent, opponent_board);
             current_player = (current_player == 1) ? 2 : 1;
+
             break;
         default:
             break;
@@ -204,9 +215,15 @@ void match_control(Match current_match){
         
        
     }
-    notify_turn(current_client, opponent );
+    // printf("Now %d turn\n", current_client);
+     
+    // send(current_client,YOUR_TURN, strlen(YOUR_TURN), 0);
+    // usleep(1000000);
+    // send(opponent,OPPONENT_TURN, strlen(OPPONENT_TURN), 0);
+    // printf("Sended %d turn\n", current_client);
+    //notify_turn( current_client, opponent );
     
-    }}
+    }
 
 }
 int is_valid_move(int row, int col, int board[GRID_SIZE][GRID_SIZE]) {
@@ -221,8 +238,9 @@ void update_game_state(int client_socket,  int board[GRID_SIZE][GRID_SIZE]) {
     memset(buffer, 0, BUFFER_SIZE);
 }
 void notify_turn(int client1_socket,int client2_socket) { 
-    send(client1_socket,"YOUR_TURN\n", BUFFER_SIZE, 0);
-    send(client2_socket,"OPPONENT_TURN\n", BUFFER_SIZE, 0);
+    send(client1_socket,YOUR_TURN, strlen(YOUR_TURN), 0);
+    send(client2_socket,OPPONENT_TURN, strlen(OPPONENT_TURN), 0);
+    printf("Client %d turn\n", client1_socket);
 }
 
 
@@ -251,3 +269,12 @@ int fire_result( int row, int col, int board[GRID_SIZE][GRID_SIZE], Ship ship ){
      return miss;
 }
 
+void update_client_state(int client_socket, int in_match) {
+    for (int i = 0; i < MAX_PLAYERS; i++) {
+        if (client_states[i].socket == client_socket) {
+            client_states[i].in_match = in_match;
+            printf("Updated client %d to in_match = %d\n", client_socket, in_match);
+            break;
+        }
+    }
+}

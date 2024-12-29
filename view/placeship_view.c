@@ -59,8 +59,8 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
                 if (current_ship == 4 &&
                     e.button.x >= ready_button.x && e.button.x <= ready_button.x + ready_button.w &&
                     e.button.y >= ready_button.y && e.button.y <= ready_button.y + ready_button.h) {
-                    send_ship_positions(sock, board);
-                    run_play_screen(renderer, sock);
+                    send_ship_positions(sock, board, renderer);
+                    
                     placing_ships = false;
                 }
             } else if (e.type == SDL_KEYDOWN) {

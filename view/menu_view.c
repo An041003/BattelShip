@@ -25,8 +25,8 @@ int render_menu_view(SDL_Renderer *renderer)
         SDL_Rect login_button = {200, 200, 200, 50};
         SDL_Rect register_button = {200, 300, 200, 50};
 
-        draw_button(renderer, login_button, (SDL_Color){0, 122, 255, 255}, "1. Login", font);
-        draw_button(renderer, register_button, (SDL_Color){0, 200, 0, 255}, "2. Register", font);
+        draw_button(renderer, login_button, (SDL_Color){0, 122, 255, 255}, "Login", font);
+        draw_button(renderer, register_button, (SDL_Color){0, 200, 0, 255}, "Register", font);
 
         SDL_RenderPresent(renderer); 
 

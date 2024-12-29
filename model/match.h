@@ -6,6 +6,13 @@
 #include "board.h"
 
 typedef struct {
+    int socket;
+    int in_match; // 1 nếu đang trong trận đấu, 0 nếu không
+} ClientState;
+
+ClientState client_states[MAX_PLAYERS];
+
+typedef struct {
     int playerId;
     int socket;
 } PlayerSocket;
@@ -22,7 +29,9 @@ typedef struct {
 } Match;
 
 Match matches[MAX_MATCHES];
-void match_control(Match current_match);
+Match temp_match;
+void match_control(int socket1, int socket2);
+void another_control(int socket1, int socket2);
 
 typedef struct {
     char username[50];
