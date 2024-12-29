@@ -113,9 +113,13 @@ void home_view(SDL_Renderer *renderer, int sock) {
                     int o_elo;
                     memset(response, 0, sizeof(response));
                     recv(sock, response, sizeof(response) - 1, 0);
+                    printf("%s\n", response);
+                    if (strncmp(response, MATCH_FOUND, strlen(MATCH_FOUND)) == 0) {
                     sscanf(response, "MATCH_FOUND %s %d", o_username, &o_elo);
                     printf("Opponent is: %s %d\n", o_username, o_elo);
+                    memset(response, 0, sizeof(response));
                     run_place_ship_screen(renderer, sock);
+                    break;}
                 } else if (x >= 440 && x <= 840 && y >= 260 && y <= 340) {
                     printf("View History button clicked\n");
                     // history_view(renderer);

@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include "result_view.h"
 #include "../model/auth.h"
+#include "home_view.h"
 
 void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
     // Khởi tạo SDL
@@ -59,7 +60,7 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
             } else if (strncmp(buffer, "HIT", strlen("HIT")) == 0) {
                 int col, row;
                 sscanf(buffer, "HIT %d %d", &col, &row);
-                printf("%d %d\n",col,row);
+                //printf("%d %d\n",col,row);
                 cell_status[row][col] = 1;
             } else if (strncmp(buffer, "MISS", strlen("MISS")) == 0) {
                 int col, row;
@@ -68,27 +69,31 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
                 cell_status[row][col] = 2;   
             } else if (strncmp(buffer, "SUNK", strlen("SUNK")) == 0) {
                 draw_text(renderer, "You Lose", 900, PADDING + 50, (SDL_Color){255, 255, 0, 255}, font);
-                MYSQL *conn = connect_database();
-                update_elo( conn, -12, get_player_id(global_username, conn));
-                mysql_close(conn);
+                // MYSQL *conn = connect_database();
+                // update_elo( conn, -12, get_player_id(global_username, conn));
+                // mysql_close(conn);
                 // display_defeated_screen(renderer, 1000-12);
-                // usleep(100000);
-                // char request[512];
-                // snprintf(request, sizeof(request), "LOSE %s", global_username);
-                // send(sock, request, strlen(request), 0);
-                // printf("%s\n",request);
+                usleep(100000);
+                char request[512];
+                snprintf(request, sizeof(request), "LOSE %s", global_username);
+                send(sock, request, strlen(request), 0);
+                usleep(100000);
+                SDL_Delay(500);
+                home_view(renderer, sock);
                 break;
             } else if (strncmp(buffer, "DESTROY", strlen("DESTROY")) == 0) {
                 draw_text(renderer, "You Win", 900, PADDING + 50, (SDL_Color){255, 255, 0, 255}, font);  
-                MYSQL *conn = connect_database();
-                update_elo( conn, 12, get_player_id(global_username, conn));
-                mysql_close(conn);
+                // MYSQL *conn = connect_database();
+                // update_elo( conn, 12, get_player_id(global_username, conn));
+                // mysql_close(conn);
                 //display_victory_screen(renderer, 1012);
-                // usleep(100000);
-                // char request[512];
-                // snprintf(request, sizeof(request), "WIN %s", global_username);
-                // send(sock, request, strlen(request), 0);
-                // printf("%s\n",request);
+                usleep(100000);
+                char request[512];
+                snprintf(request, sizeof(request), "WIN %s", global_username);
+                send(sock, request, strlen(request), 0);
+                usleep(100000);
+                SDL_Delay(500);
+                home_view(renderer, sock);
                 break;
             }
             // else{ 
