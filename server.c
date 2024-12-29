@@ -80,8 +80,9 @@ void *client_handler(void *arg) {
         if (matches[i].player1_ready == 1 && matches[i].player2_ready == 1) {
             printf("Both boards are ready for match %d\n", i);
             memcpy(&temp_match, &matches[i], sizeof(temp_match));
+            add_client_state(temp_match.player1_socket);
+            add_client_state(temp_match.player2_socket);
             match_control(temp_match.player1_socket, temp_match.player2_socket);
-            client_state->in_match = 0;
             // Reset 
             matches[i].player1_ready = 0;
             matches[i].player2_ready = 0;
@@ -90,9 +91,16 @@ void *client_handler(void *arg) {
         break;
         }
         
-        // }else if (strncmp(buffer, FIRE, strlen(FIRE)) == 0) {
-        //         printf(" Boom %s\n", buffer);
-                
+        }else if (strncmp(buffer, WIN, strlen(WIN)) == 0) {
+                char username[50];
+                sscanf(buffer, "WIN %s", username);
+                printf("%s win \n", username);
+                //update_elo(conn, 12, get_player_id(username,conn));
+        }else if (strncmp(buffer, LOSE, strlen(LOSE)) == 0) {
+                char username[50];
+                sscanf(buffer, "LOSE %s", username);
+                printf("%s lose \n", username);
+                //update_elo(conn, -12, get_player_id(username,conn));       
         }else {
             printf("Invalid message.\n");
         }

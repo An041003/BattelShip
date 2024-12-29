@@ -12,6 +12,7 @@ typedef struct {
 
 ClientState client_states[MAX_PLAYERS];
 
+void add_client_state(int client_socket);
 typedef struct {
     int playerId;
     int socket;

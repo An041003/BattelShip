@@ -14,5 +14,5 @@ int get_player_id(char *username, MYSQL *conn);
 int get_player_elo(int id, MYSQL *conn);
 int getPlayerSocket(int playerId);
 void addPlayerSocket(int playerId, int socket);
-
+void update_elo(MYSQL *conn, int grade, int playerId);
 #endif 
