@@ -269,4 +269,26 @@ char *get_user_name_by_id(int id, MYSQL *conn){
     return name;
 }
 
+char *get_user_name_by_id(int id, MYSQL *conn){
+    char query[256];
+     snprintf(query, sizeof(query), "SELECT username FROM users WHERE id = '%d'", id);
+     if (mysql_query(conn, query)) {
+        fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
+        return false;
+    }
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    char *name = malloc(strlen(row[0]) + 1);
+    if(row){
+       strcpy(name, row[0]);
+    }
+    else {
+        fprintf(stderr, "No user found with id: %d\n", id);
+        mysql_free_result(result); 
+        return NULL;
+    }
+     mysql_free_result(result); 
+    return name;
+}
+
 
