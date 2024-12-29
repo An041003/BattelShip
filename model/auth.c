@@ -225,7 +225,7 @@ MatchData *get_player_matches(char *username, MYSQL *conn, int *match_count) {
         char *player1_name = get_user_name_by_id(atoi(row[1]), conn);
         char *player2_name = get_user_name_by_id(atoi(row[2]), conn);
         snprintf(matches[i].player1, sizeof(matches[i].player1), "%s", player1_name); 
-         snprintf(matches[i].player1, sizeof(matches[i].player2), "%s", player1_name); 
+        snprintf(matches[i].player2, sizeof(matches[i].player2), "%s", player2_name); 
         snprintf(matches[i].winner, sizeof(matches[i].winner), "%s", row[3]); 
         i++;
     }
@@ -247,27 +247,6 @@ void update_elo(MYSQL *conn, int grade, int playerId){
     }
 }
 
-char *get_user_name_by_id(int id, MYSQL *conn){
-    char query[256];
-     snprintf(query, sizeof(query), "SELECT username FROM users WHERE id = '%d'", id);
-     if (mysql_query(conn, query)) {
-        fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
-        return false;
-    }
-    MYSQL_RES *result = mysql_store_result(conn);
-    MYSQL_ROW row = mysql_fetch_row(result);
-    char *name = malloc(strlen(row[0]) + 1);
-    if(row){
-       strcpy(name, row[0]);
-    }
-    else {
-        fprintf(stderr, "No user found with id: %d\n", id);
-        mysql_free_result(result); 
-        return NULL;
-    }
-     mysql_free_result(result); 
-    return name;
-}
 
 char *get_user_name_by_id(int id, MYSQL *conn){
     char query[256];

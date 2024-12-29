@@ -116,7 +116,7 @@ void *client_handler(void *arg) {
 
     mysql_close(conn);
     close(client_socket);
-    free(client_socket);
+    free(client_state);
     return NULL;
 }
 

@@ -28,6 +28,7 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
     fcntl(sock, F_SETFL, flags | O_NONBLOCK);
     int cell_status[GRID_SIZE][GRID_SIZE] = {0};
     //pthread_mutex_t data_mutex = PTHREAD_COND_INITIALIZER;
+    SDL_Rect surrender_button = {1100, 600, 150, 50};
     while(play){
     // Vẽ giao diện
             SDL_Event event;
@@ -51,6 +52,10 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
                 SDL_RenderDrawRect(renderer, &cell_rect);
             }
         }
+            // Vẽ nút Surrender
+            SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+            SDL_RenderFillRect(renderer, &surrender_button);
+            draw_text(renderer, "Surrender", surrender_button.x + 10, surrender_button.y + 10, (SDL_Color){255, 255, 255, 255}, font);
             if (strncmp(buffer, "YOUR_TURN", strlen("YOUR_TURN")) == 0 || strncmp(buffer, "Y", strlen("Y")) == 0) {
                 is_my_turn = true;
                 draw_text(renderer, "Your turn", 900, PADDING, (SDL_Color){0, 255, 0, 255}, font);
@@ -110,8 +115,19 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
         if (event.type == SDL_QUIT) {
             play = false;
         } else if (event.type == SDL_MOUSEBUTTONDOWN && event.button.button == SDL_BUTTON_LEFT) {
+            
             int mouse_x = event.button.x;
             int mouse_y = event.button.y;
+
+            if (mouse_x >= surrender_button.x && mouse_x <= surrender_button.x + surrender_button.w &&
+                    mouse_y >= surrender_button.y && mouse_y <= surrender_button.y + surrender_button.h) {
+                    if (is_my_turn) {
+                    snprintf(message, sizeof(message), "FF\n");
+                    send(sock, message, strlen(message), 0);
+                    } else {
+                    draw_text(renderer, "Wait opponent", 1100, PADDING, (SDL_Color){255, 255, 255, 255}, font);
+                    }
+                }
 
             int col = (mouse_x - player_grid_x) / CELL_SIZE;
             int row = (mouse_y - player_grid_y) / CELL_SIZE;

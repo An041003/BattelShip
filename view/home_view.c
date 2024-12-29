@@ -121,8 +121,15 @@ void home_view(SDL_Renderer *renderer, int sock) {
                     run_place_ship_screen(renderer, sock);
                     break;}
                 } else if (x >= 440 && x <= 840 && y >= 260 && y <= 340) {
-                    printf("View History button clicked\n");
-                    // history_view(renderer);
+                    
+                    MYSQL *conn = connect_database();
+                    if (conn) {
+                        history_view(renderer, conn, font, global_username);
+                        printf("View History button clicked\n");
+                        mysql_close(conn); // Đóng kết nối sau khi gọi history_view
+                    } else {
+                        printf("Failed to connect to database\n");
+                    }
                 } else if (x >= 440 && x <= 840 && y >= 370 && y <= 450) {
                     printf("Logout button clicked\n");
                     home_running = false; 

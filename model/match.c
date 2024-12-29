@@ -175,9 +175,20 @@ void match_control(int socket1, int socket2){
     opponent_board = (current_player == 1) ? board2 : board1;
     
     recv(current_client, buffer, sizeof(buffer), 0); 
-
     int row, col;
     sscanf(buffer, "FIRE %d %d", &col, &row);
+    if (strncmp(buffer, "FF", 2) == 0) {
+            send(current_client, "SUNK\n", strlen("SUNK\n"), 0);
+            send(opponent, "DESTROY\n", strlen("DESTROY\n"), 0);
+            update_client_state(current_client, 0);
+            update_client_state(opponent, 0);
+            printf("Match ended. Player %d surrenders. Player %d wins.\n", current_player, opponent);
+            memset(waitingList, 0, sizeof(waitingList));
+            memset(buffer, 0, sizeof(buffer));
+            run = 0;
+            continue;
+        }
+    
     if(is_valid_move(row, col, opponent_board)) {
         int result = fire_result(row, col,opponent_board);
         switch (result)
@@ -270,5 +281,5 @@ void add_client_state(int client_socket) {
     client_states[client_count].socket = client_socket;
     client_states[client_count].in_match = 1; 
     client_count++;
-    printf("Added client %d to the state list witc.\n", client_socket);
+    printf("Added client %d to the state list.\n", client_socket);
 }
