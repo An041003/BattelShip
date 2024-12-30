@@ -192,7 +192,7 @@ MatchData *get_player_matches(char *username, MYSQL *conn, int *match_count) {
     }
 
     char query[256];
-    snprintf(query, sizeof(query), "SELECT * FROM matches WHERE playerId1 = %d OR playerId2 = %d", userId, userId);
+    snprintf(query, sizeof(query), "SELECT * FROM matches WHERE playerId1 = %d OR playerId2 = %d ORDER BY id DESC LIMIT 20", userId, userId);
 
     if (mysql_query(conn, query)) {
         fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
