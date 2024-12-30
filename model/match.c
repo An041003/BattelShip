@@ -145,7 +145,7 @@ int create_match(MYSQL *conn, int playerId1, int playerId2){
 
 void update_match_outcome(MYSQL *conn, int matchId, char *winner){
     char query[256];
-    snprintf(query, sizeof(query), "UPDATE matches SET Winner = %s WHERE id = %d",winner, matchId );
+    snprintf(query, sizeof(query), "UPDATE matches SET Winner = '%s' WHERE id = %d", winner, matchId);
      if (mysql_query(conn, query)) {
         fprintf(stderr, "Query failed: %s\n", mysql_error(conn));
         return -1;
