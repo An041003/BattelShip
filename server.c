@@ -104,6 +104,8 @@ void *client_handler(void *arg) {
                 sscanf(buffer, "WIN %s", username);
                 printf("%s win \n", username);
                 update_elo(conn, 12, get_player_id(username,conn));
+                update_match_outcome(conn, match_temp, username);
+                memset(match_temp, 0, sizeof(match_temp));
         }else if (strncmp(buffer, LOSE, strlen(LOSE)) == 0) {
                 char username[50];
                 sscanf(buffer, "LOSE %s", username);

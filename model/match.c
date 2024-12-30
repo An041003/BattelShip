@@ -15,7 +15,7 @@ int waitingCount = 0;
 int playerSocketCount = 0;
 int match_count = 0;
 int client_count = 0;
-
+int match_temp =0;
 
 void addPlayerToQueue(Player player) {
 
@@ -91,6 +91,7 @@ void handleMatchmaking(int client_socket, Player player) {
             int matchID = create_match(conn, get_player_id(player.username, conn), get_player_id(opponent->username, conn));
             if (matchID != -1)
             printf("Match %d: %s vs %s\n",matchID, player.username, opponent->username);
+            matchID = match_temp;
             mysql_close;
             break; // Thoát khỏi vòng lặp khi tìm được trận
         } else {
