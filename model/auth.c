@@ -225,7 +225,7 @@ MatchData *get_player_matches(char *username, MYSQL *conn, int *match_count) {
         char *player1_name = get_user_name_by_id(atoi(row[1]), conn);
         char *player2_name = get_user_name_by_id(atoi(row[2]), conn);
         snprintf(matches[i].player1, sizeof(matches[i].player1), "%s", player1_name); 
-         snprintf(matches[i].player1, sizeof(matches[i].player2), "%s", player1_name); 
+        snprintf(matches[i].player2, sizeof(matches[i].player2), "%s", player2_name); 
         snprintf(matches[i].winner, sizeof(matches[i].winner), "%s", row[3]); 
         i++;
     }
@@ -238,12 +238,15 @@ MatchData *get_player_matches(char *username, MYSQL *conn, int *match_count) {
 //hàm này cập nhập điểm của 1 người sau khi kết thúc một trận đấu
 void update_elo(MYSQL *conn, int grade, int playerId){
     char query[256];
-    snprintf(query, sizeof(query), "UPDATE users SET elo = grade + elo WHERE id = %d ",playerId, playerId);
+    snprintf(query, sizeof(query), "UPDATE users SET elo = elo + %d WHERE id = %d", grade, playerId);
+    
     if (mysql_query(conn, query)) {
-        fprintf(stderr, "Authentication query failed: %s\n", mysql_error(conn));
+        fprintf(stderr, "Update query failed: %s\n", mysql_error(conn));
+    } else {
+        fprintf(stderr, "Updated successfully\n");
     }
-     fprintf(stderr, "Updated\n");
 }
+
 
 char *get_user_name_by_id(int id, MYSQL *conn){
     char query[256];

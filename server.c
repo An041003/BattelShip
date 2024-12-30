@@ -31,6 +31,14 @@ void *client_handler(void *arg) {
     while (1) {
 
         memset(buffer, 0, sizeof(buffer));
+        for (int i = 0; i < MAX_PLAYERS; i++) {
+            if (client_states[i].socket == client_state->socket) {
+            client_state->in_match = client_states[i].in_match; // Đồng bộ trạng thái
+            break;
+            }
+        }
+
+        //printf("check %d in match %d\n",client_state->socket, client_state->in_match);
         
         if (client_state->in_match == 1) {
             sleep(1); // Chờ trạng thái thay đổi
@@ -84,8 +92,8 @@ void *client_handler(void *arg) {
             add_client_state(temp_match.player2_socket);
             match_control(temp_match.player1_socket, temp_match.player2_socket);
             // Reset 
-            matches[i].player1_ready = 0;
-            matches[i].player2_ready = 0;
+            //matches[i].player1_ready = 0;
+            //matches[i].player2_ready = 0;
         }
 
         break;
@@ -95,12 +103,12 @@ void *client_handler(void *arg) {
                 char username[50];
                 sscanf(buffer, "WIN %s", username);
                 printf("%s win \n", username);
-                //update_elo(conn, 12, get_player_id(username,conn));
+                update_elo(conn, 12, get_player_id(username,conn));
         }else if (strncmp(buffer, LOSE, strlen(LOSE)) == 0) {
                 char username[50];
                 sscanf(buffer, "LOSE %s", username);
                 printf("%s lose \n", username);
-                //update_elo(conn, -12, get_player_id(username,conn));       
+                update_elo(conn, -12, get_player_id(username,conn));       
         }else {
             printf("Invalid message.\n");
         }
@@ -108,7 +116,7 @@ void *client_handler(void *arg) {
 
     mysql_close(conn);
     close(client_socket);
-    free(client_socket);
+    free(client_state);
     return NULL;
 }
 

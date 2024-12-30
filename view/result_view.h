@@ -6,8 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string.h>
-
-    void display_victory_screen(SDL_Renderer *renderer, const char *elo);
-    void display_defeated_screen(SDL_Renderer *renderer, const char *elo);
+#include <mysql/mysql.h>
+void history_view(SDL_Renderer *renderer, MYSQL *conn, TTF_Font *font, const char *username);
 
 #endif
