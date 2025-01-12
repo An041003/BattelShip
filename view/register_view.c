@@ -15,7 +15,7 @@ void render_register(SDL_Renderer *renderer, TTF_Font *font, char *username, cha
     SDL_Color blue = {50, 100, 200};
 
     // Các hộp hiển thị
-    SDL_Rect username_box = {300, 150, 400, 50};
+    SDL_Rect username_box = {300, 150, 600, 500};
     SDL_Rect password_box = {300, 250, 400, 50};
     SDL_Rect register_button = {300, 350, 200, 50};
 

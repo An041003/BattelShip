@@ -59,8 +59,12 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
                 if (current_ship == 4 &&
                     e.button.x >= ready_button.x && e.button.x <= ready_button.x + ready_button.w &&
                     e.button.y >= ready_button.y && e.button.y <= ready_button.y + ready_button.h) {
-                    send_ship_positions(sock, board, renderer);
                     
+                    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255); 
+                    SDL_RenderClear(renderer); 
+                    draw_text(renderer, "Wait opponent!", 750, 300,(SDL_Color){255, 255, 255, 255}, font);
+                    SDL_RenderPresent(renderer); 
+                    send_ship_positions(sock, board, renderer);
                     placing_ships = false;
                 }
             } else if (e.type == SDL_KEYDOWN) {
@@ -95,6 +99,7 @@ void run_place_ship_screen(SDL_Renderer *renderer, int sock) {
     }
 
     // Giải phóng tài nguyên
+    SDL_RenderClear(renderer);
     SDL_DestroyTexture(ship_texture);
     TTF_CloseFont(font);
 }
