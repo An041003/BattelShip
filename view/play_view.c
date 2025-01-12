@@ -56,6 +56,7 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
             SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
             SDL_RenderFillRect(renderer, &surrender_button);
             draw_text(renderer, "Surrender", surrender_button.x + 10, surrender_button.y + 10, (SDL_Color){255, 255, 255, 255}, font);
+            SDL_Texture *img = NULL;
             if (strncmp(buffer, "YOUR_TURN", strlen("YOUR_TURN")) == 0 || strncmp(buffer, "Y", strlen("Y")) == 0) {
                 is_my_turn = true;
                 draw_text(renderer, "Your turn", 900, PADDING, (SDL_Color){0, 255, 0, 255}, font);
@@ -74,30 +75,36 @@ void run_play_screen(SDL_Renderer *renderer, int sock, char buffer[256]) {
                 cell_status[row][col] = 2;   
             } else if (strncmp(buffer, "SUNK", strlen("SUNK")) == 0) {
                 draw_text(renderer, "You Lose", 900, PADDING + 50, (SDL_Color){255, 255, 0, 255}, font);
-                // MYSQL *conn = connect_database();
-                // update_elo( conn, -12, get_player_id(global_username, conn));
-                // mysql_close(conn);
-                // display_defeated_screen(renderer, 1000-12);
                 usleep(100000);
                 char request[512];
                 snprintf(request, sizeof(request), "LOSE %s", global_username);
                 send(sock, request, strlen(request), 0);
                 usleep(100000);
                 SDL_Delay(500);
+                img = IMG_LoadTexture(renderer, "/home/an/Documents/GitHub/BattelShip/lose.png");
+                SDL_Rect dest = {550,200,500,500};
+                SDL_RenderClear(renderer);
+                SDL_RenderCopy(renderer, img, NULL, &dest);
+                SDL_RenderPresent(renderer);
+                SDL_Delay(3000);
+                SDL_DestroyTexture(img);
                 home_view(renderer, sock);
                 break;
             } else if (strncmp(buffer, "DESTROY", strlen("DESTROY")) == 0) {
                 draw_text(renderer, "You Win", 900, PADDING + 50, (SDL_Color){255, 255, 0, 255}, font);  
-                // MYSQL *conn = connect_database();
-                // update_elo( conn, 12, get_player_id(global_username, conn));
-                // mysql_close(conn);
-                //display_victory_screen(renderer, 1012);
                 usleep(100000);
                 char request[512];
                 snprintf(request, sizeof(request), "WIN %s", global_username);
                 send(sock, request, strlen(request), 0);
                 usleep(100000);
                 SDL_Delay(500);
+                img = IMG_LoadTexture(renderer, "/home/an/Documents/GitHub/BattelShip/win.jpg");
+                SDL_Rect dest = {550,200,500,500};
+                SDL_RenderClear(renderer);
+                SDL_RenderCopy(renderer, img, NULL, &dest);
+                SDL_RenderPresent(renderer);
+                SDL_Delay(3000);
+                SDL_DestroyTexture(img);
                 home_view(renderer, sock);
                 break;
             }
